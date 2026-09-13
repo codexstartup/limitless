@@ -2,1245 +2,1575 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
 
 <title>LIMITLESS — Magnus Verity × BL4Z3</title>
 
 <style>
 /* =========================================================
-   RESET / FOUNDATION
+   RESET
 ========================================================= */
 
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
+*::after{
+  box-sizing:border-box;
 }
 
-html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+html{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+  scroll-behavior:smooth;
 }
 
-body {
-  margin: 0;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
+body{
+  margin:0;
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
 
-  background: #fff;
-  color: #050505;
+  background:#050505;
+  color:#fff;
 
   font-family:
     Inter,
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
-    Arial,
     sans-serif;
 
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
 }
 
-img,
-svg {
-  max-width: 100%;
+body::selection{
+  background:#fff;
+  color:#000;
 }
 
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
+a{
+  color:inherit;
+  text-decoration:none;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+button{
+  font:inherit;
 }
+
+svg{
+  display:block;
+}
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+.page{
+  width:100%;
+  max-width:100%;
+  overflow:hidden;
+}
+
+.container{
+  width:min(1180px,calc(100% - 48px));
+  margin:auto;
+}
+
+.kicker{
+  font-size:10px;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:#777;
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(35px);
+  transition:
+    opacity .8s ease,
+    transform .9s cubic-bezier(.16,1,.3,1);
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
 
 /* =========================================================
    LOADER
 ========================================================= */
 
-.loader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
+.loader{
+  position:fixed;
+  inset:0;
+  z-index:9999;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display:grid;
+  place-items:center;
 
-  background: #050505;
-  color: #fff;
+  background:#050505;
 
   transition:
-    opacity .8s ease,
-    visibility .8s ease;
+    opacity .9s ease,
+    visibility .9s ease;
 }
 
-.loader.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+.loader.hide{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
 }
 
-.loader-inner {
-  width: min(680px, calc(100% - 40px));
-  text-align: center;
+.loader-content{
+  width:min(700px,calc(100% - 40px));
 }
 
-.loader-small {
-  font-size: 10px;
-  letter-spacing: .28em;
-  opacity: .5;
-  margin-bottom: 24px;
+.loader-meta{
+  font-size:9px;
+  letter-spacing:.3em;
+  color:#666;
+  margin-bottom:25px;
 }
 
-.loader-title {
-  font-size: clamp(48px, 10vw, 130px);
-  line-height: .8;
-  letter-spacing: -.075em;
-  font-weight: 900;
+.loader-word{
+  font-size:clamp(55px,12vw,150px);
+  line-height:.75;
+  letter-spacing:-.08em;
+  font-weight:900;
 }
 
-.loader-line {
-  width: 0;
-  height: 1px;
-  background: #fff;
-  margin: 30px auto 0;
-  animation: loaderLine 1.8s cubic-bezier(.65,0,.2,1) forwards;
+.loader-bar{
+  width:0;
+  height:1px;
+  background:#fff;
+  margin-top:35px;
+  animation:load 1.8s cubic-bezier(.65,0,.2,1) forwards;
 }
 
-@keyframes loaderLine {
-  to {
-    width: 100%;
-  }
+@keyframes load{
+  to{width:100%}
 }
+
 
 /* =========================================================
    NAV
 ========================================================= */
 
-.nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+.nav{
+  position:fixed;
+  z-index:100;
 
-  z-index: 100;
+  top:0;
+  left:0;
+  right:0;
 
-  height: 72px;
+  height:72px;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 
-  padding:
-    0 clamp(20px, 4vw, 64px);
+  padding:0 clamp(20px,4vw,60px);
 
-  color: #fff;
+  mix-blend-mode:difference;
 
-  mix-blend-mode: difference;
-
-  pointer-events: none;
+  pointer-events:none;
 }
 
-.nav > * {
-  pointer-events: auto;
+.nav-brand,
+.nav-number{
+  pointer-events:auto;
 }
 
-.nav-brand {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .18em;
-  white-space: nowrap;
+.nav-brand{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.2em;
 }
 
-.nav-right {
-  font-size: 10px;
-  letter-spacing: .2em;
-  opacity: .7;
+.nav-number{
+  font-size:9px;
+  letter-spacing:.2em;
+  color:#aaa;
 }
+
 
 /* =========================================================
    HERO
 ========================================================= */
 
-.hero {
-  min-height: 100svh;
-  min-height: 100vh;
+.hero{
+  position:relative;
 
-  background: #050505;
-  color: #fff;
+  min-height:100svh;
+  min-height:100vh;
 
-  position: relative;
+  display:flex;
+  align-items:center;
 
-  display: flex;
-  align-items: center;
+  overflow:hidden;
 
-  padding:
-    120px clamp(24px, 7vw, 100px) 80px;
-
-  overflow: hidden;
+  background:#050505;
 }
 
-.hero-content {
-  width: min(1250px, 100%);
-  margin: auto;
+.hero-content{
+  position:relative;
+  z-index:5;
+
+  width:min(1180px,calc(100% - 48px));
+  margin:auto;
 }
 
-.eyebrow {
-  font-size: 10px;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  opacity: .45;
-  margin-bottom: 28px;
+.hero-kicker{
+  margin-bottom:30px;
 }
 
-.hero-title {
-  margin: 0;
+.hero-title{
+  margin:0;
 
-  font-size: clamp(64px, 15vw, 220px);
-  line-height: .76;
-  letter-spacing: -.085em;
+  font-size:clamp(65px,14vw,190px);
+  line-height:.76;
 
-  font-weight: 900;
+  letter-spacing:-.09em;
+  font-weight:900;
 
-  max-width: 1200px;
+  max-width:1100px;
 }
 
-.hero-sub {
-  margin-top: 46px;
-
-  width: min(540px, 100%);
-
-  font-size: clamp(15px, 2vw, 20px);
-  line-height: 1.6;
-
-  color: rgba(255,255,255,.62);
+.hero-title span{
+  display:block;
 }
 
-.hero-bottom {
-  position: absolute;
-  left: clamp(24px, 7vw, 100px);
-  right: clamp(24px, 7vw, 100px);
-  bottom: 32px;
+.hero-sub{
+  margin-top:45px;
 
-  display: flex;
-  justify-content: space-between;
+  max-width:520px;
 
-  font-size: 9px;
-  letter-spacing: .2em;
-  opacity: .4;
+  color:#777;
+
+  font-size:clamp(15px,2vw,19px);
+  line-height:1.65;
 }
+
 
 /* =========================================================
-   GENERAL SECTION
+   LIVING 3D CORE
 ========================================================= */
 
-.section {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
+.hero-visual{
+  position:absolute;
+
+  width:min(58vw,700px);
+  height:min(58vw,700px);
+
+  right:-12vw;
+  top:50%;
+
+  transform:
+    translateY(-50%);
+
+  pointer-events:none;
+
+  perspective:1000px;
 }
 
-.section-inner {
-  width: min(1180px, calc(100% - 48px));
-  margin: 0 auto;
+.core{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:180px;
+  height:180px;
+
+  transform:
+    translate(-50%,-50%)
+    rotateX(55deg)
+    rotateZ(20deg);
+
+  transform-style:preserve-3d;
+
+  animation:
+    coreFloat 7s ease-in-out infinite;
 }
 
-/* =========================================================
-   STORY INTRO
-========================================================= */
+.core-face{
+  position:absolute;
+  inset:0;
 
-.story-intro {
-  min-height: 75vh;
-
-  display: flex;
-  align-items: center;
-
-  padding: 120px 0;
-}
-
-.story-intro-grid {
-  display: grid;
-  grid-template-columns: .65fr 1.35fr;
-  gap: clamp(40px, 8vw, 130px);
-  align-items: start;
-}
-
-.section-number {
-  font-size: 10px;
-  letter-spacing: .3em;
-  color: #888;
-}
-
-.story-intro h2 {
-  margin: 0;
-
-  font-size: clamp(42px, 8vw, 100px);
-  line-height: .88;
-  letter-spacing: -.065em;
-}
-
-.story-intro p {
-  margin-top: 32px;
-
-  max-width: 650px;
-
-  color: #777;
-
-  font-size: clamp(16px, 2vw, 21px);
-  line-height: 1.65;
-}
-
-/* =========================================================
-   GLASS STORY AREA
-========================================================= */
-
-.story {
-  background:
-    radial-gradient(circle at 50% 20%, #f5f5f5 0, #fff 42%);
-  padding: 100px 0 0;
-}
-
-.story-card-wrap {
-  width: min(900px, 100%);
-  margin: 0 auto;
-
-  position: relative;
-  z-index: 2;
-}
-
-.story-card {
-  position: relative;
-
-  margin-bottom: 110px;
-
-  padding:
-    clamp(28px, 5vw, 64px);
-
-  border: 1px solid rgba(0,0,0,.1);
-
-  border-radius: 28px;
+  border:1px solid rgba(255,255,255,.55);
 
   background:
     linear-gradient(
       135deg,
-      rgba(255,255,255,.86),
-      rgba(245,245,245,.56)
+      rgba(255,255,255,.14),
+      rgba(255,255,255,.015)
     );
 
   box-shadow:
-    0 25px 70px rgba(0,0,0,.07),
-    inset 0 1px 0 rgba(255,255,255,.9);
+    inset 0 0 30px rgba(255,255,255,.04),
+    0 0 70px rgba(255,255,255,.04);
 
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  opacity: 0;
-  transform: translateY(45px);
-
-  transition:
-    opacity .8s ease,
-    transform .8s cubic-bezier(.2,.75,.2,1);
+  backdrop-filter:blur(5px);
 }
 
-.story-card.visible {
-  opacity: 1;
-  transform: translateY(0);
+.core-face:nth-child(1){
+  transform:translateZ(90px);
 }
 
-.card-index {
-  font-size: 9px;
-  letter-spacing: .25em;
-  color: #999;
-  margin-bottom: 30px;
+.core-face:nth-child(2){
+  transform:rotateY(90deg) translateZ(90px);
 }
 
-.story-card h3 {
-  margin: 0;
-
-  font-size: clamp(34px, 6vw, 72px);
-  line-height: .9;
-  letter-spacing: -.065em;
+.core-face:nth-child(3){
+  transform:rotateX(90deg) translateZ(90px);
 }
 
-.story-card p {
-  margin:
-    28px 0 0;
-
-  max-width: 620px;
-
-  font-size: clamp(15px, 2vw, 19px);
-  line-height: 1.7;
-
-  color: #666;
+.core-face:nth-child(4){
+  transform:translateZ(-90px);
 }
+
+.core-face:nth-child(5){
+  transform:rotateY(90deg) translateZ(-90px);
+}
+
+.core-face:nth-child(6){
+  transform:rotateX(90deg) translateZ(-90px);
+}
+
+.core-dot{
+  position:absolute;
+
+  width:25px;
+  height:25px;
+
+  left:50%;
+  top:50%;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
+
+  background:#fff;
+
+  box-shadow:
+    0 0 20px rgba(255,255,255,.7),
+    0 0 80px rgba(255,255,255,.2);
+
+  z-index:4;
+}
+
+@keyframes coreFloat{
+  0%,100%{
+    transform:
+      translate(-50%,-50%)
+      rotateX(55deg)
+      rotateZ(20deg)
+      translateY(0);
+  }
+
+  50%{
+    transform:
+      translate(-50%,-50%)
+      rotateX(55deg)
+      rotateZ(45deg)
+      translateY(-18px);
+  }
+}
+
 
 /* =========================================================
-   ROCKET FLIGHT SYSTEM
-   IMPORTANT:
-   ROCKET IS BELOW THE CARDS.
+   ORBIT RINGS
 ========================================================= */
 
-.flight-system {
-  position: relative;
+.orbit{
+  position:absolute;
 
-  width: min(900px, 100%);
-  height: 1100px;
+  left:50%;
+  top:50%;
 
-  margin: -40px auto 0;
+  border:1px solid rgba(255,255,255,.16);
 
-  overflow: hidden;
+  border-radius:50%;
 
-  border-left: 1px solid rgba(0,0,0,.06);
-  border-right: 1px solid rgba(0,0,0,.06);
-
-  background:
-    linear-gradient(
-      to right,
-      transparent 49.8%,
-      rgba(0,0,0,.055) 50%,
-      transparent 50.2%
-    );
+  transform-style:preserve-3d;
 }
 
-.flight-label {
-  position: absolute;
+.orbit::after{
+  content:"";
 
-  top: 28px;
-  left: 50%;
+  position:absolute;
 
-  transform: translateX(-50%);
+  width:7px;
+  height:7px;
 
-  font-size: 8px;
-  letter-spacing: .3em;
+  border-radius:50%;
 
-  color: #aaa;
+  background:#fff;
 
-  white-space: nowrap;
+  box-shadow:0 0 18px #fff;
 }
 
-/* dotted path */
-
-.flight-path {
-  position: absolute;
-
-  left: 50%;
-  top: 70px;
-  bottom: 70px;
-
-  width: 1px;
-
-  transform: translateX(-50%);
-
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      #ccc 0,
-      #ccc 5px,
-      transparent 5px,
-      transparent 14px
-    );
-}
-
-/* =========================================================
-   ROCKET
-========================================================= */
-
-.rocket {
-  position: absolute;
-
-  left: 50%;
-  top: 100px;
-
-  width: 76px;
-  height: 120px;
+.orbit-a{
+  width:75%;
+  height:28%;
 
   transform:
-    translate3d(-50%, 0, 0)
-    rotate(0deg);
+    translate(-50%,-50%)
+    rotateX(65deg)
+    rotateZ(-20deg);
 
-  transform-origin: center center;
-
-  z-index: 5;
-
-  will-change: transform;
+  animation:orbitA 14s linear infinite;
 }
 
-.rocket svg {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  overflow: visible;
+.orbit-a::after{
+  left:12%;
+  top:50%;
 }
 
-/*
-  ROCKET POINTS DOWNWARD.
+.orbit-b{
+  width:55%;
+  height:55%;
 
-  The nose is at the BOTTOM.
-  Engine/exhaust is at the TOP.
+  transform:
+    translate(-50%,-50%)
+    rotateY(70deg)
+    rotateZ(15deg);
 
-  This completely removes the old triangular "nose" problem.
-*/
+  animation:orbitB 17s linear infinite reverse;
+}
 
-.rocket-body {
-  position: absolute;
+.orbit-b::after{
+  right:5%;
+  top:25%;
+}
 
-  left: 50%;
-  top: 20px;
+.orbit-c{
+  width:88%;
+  height:40%;
 
-  width: 42px;
-  height: 82px;
+  transform:
+    translate(-50%,-50%)
+    rotateX(70deg)
+    rotateZ(65deg);
 
-  transform: translateX(-50%);
+  animation:orbitC 22s linear infinite;
+}
+
+.orbit-c::after{
+  left:50%;
+  top:0;
+}
+
+@keyframes orbitA{
+  to{
+    transform:
+      translate(-50%,-50%)
+      rotateX(65deg)
+      rotateZ(340deg);
+  }
+}
+
+@keyframes orbitB{
+  to{
+    transform:
+      translate(-50%,-50%)
+      rotateY(70deg)
+      rotateZ(-345deg);
+  }
+}
+
+@keyframes orbitC{
+  to{
+    transform:
+      translate(-50%,-50%)
+      rotateX(70deg)
+      rotateZ(425deg);
+  }
+}
+
+
+/* =========================================================
+   FLOATING PARTICLES
+========================================================= */
+
+.particles{
+  position:absolute;
+  inset:0;
+
+  pointer-events:none;
+}
+
+.particle{
+  position:absolute;
+
+  width:2px;
+  height:2px;
+
+  border-radius:50%;
+
+  background:#fff;
+
+  opacity:.35;
+
+  animation:
+    particleFloat var(--speed) ease-in-out infinite;
+}
+
+@keyframes particleFloat{
+  0%,100%{
+    transform:translate3d(0,0,0);
+    opacity:.15;
+  }
+
+  50%{
+    transform:translate3d(var(--x),var(--y),0);
+    opacity:.7;
+  }
+}
+
+
+/* =========================================================
+   SCROLL INDICATOR
+========================================================= */
+
+.scroll-note{
+  position:absolute;
+
+  left:clamp(24px,7vw,100px);
+  bottom:30px;
+
+  font-size:8px;
+  letter-spacing:.25em;
+
+  color:#555;
+}
+
+
+/* =========================================================
+   WHITE STORY SECTION
+========================================================= */
+
+.story{
+  position:relative;
+
+  background:#fff;
+  color:#050505;
+
+  padding:160px 0 80px;
+
+  overflow:hidden;
+}
+
+.story-intro{
+  display:grid;
+
+  grid-template-columns:.7fr 1.3fr;
+
+  gap:clamp(40px,8vw,130px);
+
+  align-items:start;
+}
+
+.story-heading{
+  margin:0;
+
+  font-size:clamp(48px,9vw,115px);
+  line-height:.83;
+
+  letter-spacing:-.075em;
+}
+
+.story-copy{
+  margin-top:35px;
+
+  max-width:650px;
+
+  color:#777;
+
+  font-size:clamp(16px,2vw,20px);
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   LIVING GRID
+========================================================= */
+
+.grid-world{
+  position:relative;
+
+  height:600px;
+
+  margin-top:120px;
+
+  overflow:hidden;
 
   background:
     linear-gradient(
+      rgba(0,0,0,.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
       90deg,
-      #111 0%,
-      #444 48%,
-      #111 100%
+      rgba(0,0,0,.055) 1px,
+      transparent 1px
     );
 
-  border-radius:
-    50% 50% 30% 30% /
-    25% 25% 15% 15%;
+  background-size:55px 55px;
 
-  border: 1px solid #555;
+  transform:
+    perspective(800px)
+    rotateX(55deg)
+    scale(1.2);
+
+  transform-origin:center bottom;
+}
+
+.grid-world::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      to top,
+      #fff 0%,
+      transparent 35%
+    );
+}
+
+.grid-object{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:150px;
+  height:150px;
+
+  transform:
+    translate(-50%,-50%)
+    rotate(45deg);
+
+  border:1px solid #111;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.9),
+      rgba(0,0,0,.03)
+    );
 
   box-shadow:
-    inset 5px 0 8px rgba(255,255,255,.08),
-    inset -5px 0 8px rgba(0,0,0,.5),
-    0 8px 20px rgba(0,0,0,.2);
+    20px 30px 70px rgba(0,0,0,.12);
+
+  animation:
+    gridObject 8s ease-in-out infinite;
 }
 
-/* proper rounded nose pointing downward */
+.grid-object::before,
+.grid-object::after{
+  content:"";
 
-.rocket-body::after {
-  content: "";
+  position:absolute;
 
-  position: absolute;
+  inset:20px;
 
-  left: 50%;
-  bottom: -18px;
-
-  width: 0;
-  height: 0;
-
-  transform: translateX(-50%);
-
-  border-left: 21px solid transparent;
-  border-right: 21px solid transparent;
-  border-top: 24px solid #151515;
+  border:1px solid rgba(0,0,0,.25);
 }
 
-/* cockpit */
+.grid-object::after{
+  inset:40px;
+}
 
-.rocket-window {
-  position: absolute;
+@keyframes gridObject{
+  0%,100%{
+    transform:
+      translate(-50%,-50%)
+      rotate(45deg)
+      translateY(0);
+  }
 
-  left: 50%;
-  top: 38px;
+  50%{
+    transform:
+      translate(-50%,-50%)
+      rotate(90deg)
+      translateY(-30px);
+  }
+}
 
-  width: 20px;
-  height: 20px;
 
-  transform: translateX(-50%);
+/* =========================================================
+   GLASS CARDS
+========================================================= */
 
-  border-radius: 50%;
+.cards{
+  position:relative;
+
+  z-index:3;
+
+  width:min(900px,100%);
+
+  margin:-80px auto 0;
+
+  display:grid;
+
+  gap:25px;
+}
+
+.glass-card{
+  position:relative;
+
+  min-height:330px;
+
+  padding:clamp(28px,5vw,60px);
+
+  border:1px solid rgba(0,0,0,.1);
+
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.92),
+      rgba(245,245,245,.68)
+    );
+
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.08),
+    inset 0 1px rgba(255,255,255,.9);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  overflow:hidden;
+}
+
+.glass-card::before{
+  content:"";
+
+  position:absolute;
+
+  width:220px;
+  height:220px;
+
+  right:-90px;
+  top:-90px;
+
+  border-radius:50%;
+
+  border:1px solid rgba(0,0,0,.08);
+
+  animation:
+    cardOrb 8s linear infinite;
+}
+
+@keyframes cardOrb{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.card-num{
+  font-size:9px;
+  letter-spacing:.25em;
+  color:#999;
+}
+
+.glass-card h3{
+  margin:40px 0 0;
+
+  font-size:clamp(40px,7vw,78px);
+  line-height:.85;
+
+  letter-spacing:-.07em;
+}
+
+.glass-card p{
+  max-width:600px;
+
+  margin:30px 0 0;
+
+  color:#707070;
+
+  font-size:16px;
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   DARK TRANSITION
+========================================================= */
+
+.dark-transition{
+  position:relative;
+
+  min-height:80vh;
+
+  display:flex;
+  align-items:center;
+
+  background:#050505;
+
+  overflow:hidden;
+}
+
+.transition-copy{
+  position:relative;
+
+  z-index:3;
+
+  width:min(1000px,calc(100% - 48px));
+  margin:auto;
+}
+
+.transition-copy h2{
+  margin:0;
+
+  font-size:clamp(55px,11vw,140px);
+  line-height:.78;
+
+  letter-spacing:-.085em;
+}
+
+.transition-copy p{
+  max-width:550px;
+
+  margin-top:45px;
+
+  color:#666;
+
+  font-size:18px;
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   3D RING WORLD
+========================================================= */
+
+.ring-world{
+  position:absolute;
+
+  right:-10vw;
+  top:50%;
+
+  width:min(65vw,800px);
+  height:min(65vw,800px);
+
+  transform:
+    translateY(-50%)
+    perspective(900px);
+
+  pointer-events:none;
+}
+
+.ring-big{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:70%;
+  height:70%;
+
+  border:
+    1px solid rgba(255,255,255,.15);
+
+  border-radius:50%;
+
+  transform:
+    translate(-50%,-50%)
+    rotateX(65deg);
+
+  animation:
+    ringSpin 18s linear infinite;
+}
+
+.ring-big:nth-child(2){
+  width:50%;
+  height:85%;
+
+  transform:
+    translate(-50%,-50%)
+    rotateY(65deg);
+
+  animation-duration:24s;
+}
+
+.ring-big:nth-child(3){
+  width:90%;
+  height:35%;
+
+  transform:
+    translate(-50%,-50%)
+    rotateX(70deg)
+    rotateZ(30deg);
+
+  animation-duration:30s;
+}
+
+.ring-core{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:100px;
+  height:100px;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
 
   background:
     radial-gradient(
       circle at 35% 30%,
-      #aaa 0,
-      #333 35%,
-      #050505 75%
+      #fff,
+      #888 15%,
+      #111 45%,
+      #050505 70%
     );
 
-  border: 2px solid #666;
-
   box-shadow:
-    0 0 12px rgba(255,255,255,.18);
+    0 0 80px rgba(255,255,255,.15);
 }
 
-/* fins */
-
-.rocket-fin-left,
-.rocket-fin-right {
-  position: absolute;
-
-  top: 69px;
-
-  width: 28px;
-  height: 34px;
-
-  background: #171717;
-
-  border: 1px solid #444;
-
-  z-index: -1;
+@keyframes ringSpin{
+  to{
+    transform:
+      translate(-50%,-50%)
+      rotateX(65deg)
+      rotateZ(360deg);
+  }
 }
 
-.rocket-fin-left {
-  left: 4px;
 
-  clip-path: polygon(
-    100% 0,
-    100% 100%,
-    0 100%,
-    35% 20%
-  );
+/* =========================================================
+   AI WORKFORCE
+========================================================= */
+
+.ai{
+  position:relative;
+
+  background:#fff;
+  color:#050505;
+
+  padding:170px 0;
+
+  overflow:hidden;
 }
 
-.rocket-fin-right {
-  right: 4px;
+.ai-inner{
+  width:min(1150px,calc(100% - 48px));
+  margin:auto;
 
-  clip-path: polygon(
-    0 0,
-    100% 20%,
-    100% 100%,
-    0 100%
-  );
+  position:relative;
+  z-index:3;
 }
 
-/* engine at TOP because rocket is flying DOWN */
-
-.rocket-engine {
-  position: absolute;
-
-  left: 50%;
-  top: 7px;
-
-  width: 18px;
-  height: 14px;
-
-  transform: translateX(-50%);
-
-  background: #080808;
-
-  border-radius: 4px 4px 2px 2px;
+.ai-label{
+  color:#888;
+  margin-bottom:35px;
 }
 
-.rocket-flame {
-  position: absolute;
+.ai-title{
+  margin:0;
 
-  left: 50%;
-  top: -22px;
+  font-size:clamp(58px,13vw,175px);
+  line-height:.75;
 
-  width: 12px;
-  height: 25px;
+  letter-spacing:-.09em;
+
+  max-width:1100px;
+}
+
+.ai-copy{
+  max-width:650px;
+
+  margin-top:65px;
+
+  color:#707070;
+
+  font-size:clamp(16px,2vw,21px);
+  line-height:1.7;
+}
+
+.ai-copy p{
+  margin:0 0 25px;
+}
+
+.ai-copy strong{
+  color:#050505;
+}
+
+
+/* =========================================================
+   AI 3D OBJECT
+========================================================= */
+
+.ai-object{
+  position:absolute;
+
+  width:360px;
+  height:360px;
+
+  right:-100px;
+  top:42%;
 
   transform:
-    translateX(-50%)
-    scaleY(.25);
+    translateY(-50%)
+    rotateX(55deg)
+    rotateZ(20deg);
 
-  transform-origin: bottom center;
+  transform-style:preserve-3d;
 
-  opacity: 0;
+  pointer-events:none;
+}
+
+.ai-cube{
+  position:absolute;
+
+  inset:80px;
+
+  transform-style:preserve-3d;
+
+  animation:
+    aiCube 14s linear infinite;
+}
+
+.ai-side{
+  position:absolute;
+  inset:0;
+
+  border:1px solid rgba(0,0,0,.35);
 
   background:
     linear-gradient(
-      to bottom,
-      #fff,
-      #bbb 40%,
+      135deg,
+      rgba(0,0,0,.06),
       transparent
     );
-
-  border-radius: 50%;
-
-  filter: blur(1px);
-
-  transition:
-    opacity .3s ease,
-    transform .3s ease;
 }
 
-.rocket.active .rocket-flame {
-  opacity: .85;
-
-  transform:
-    translateX(-50%)
-    scaleY(1);
+.ai-side:nth-child(1){
+  transform:translateZ(100px);
 }
 
-/* glow */
-
-.rocket-glow {
-  position: absolute;
-
-  left: 50%;
-  top: 0;
-
-  width: 90px;
-  height: 90px;
-
-  transform: translateX(-50%);
-
-  border-radius: 50%;
-
-  background: rgba(255,255,255,.12);
-
-  filter: blur(22px);
-
-  opacity: 0;
-
-  pointer-events: none;
+.ai-side:nth-child(2){
+  transform:rotateY(90deg) translateZ(100px);
 }
 
-.rocket.active .rocket-glow {
-  opacity: .6;
+.ai-side:nth-child(3){
+  transform:rotateX(90deg) translateZ(100px);
 }
 
-/* =========================================================
-   AFTER ROCKET
-========================================================= */
-
-.after-flight {
-  padding: 150px 0 120px;
+.ai-side:nth-child(4){
+  transform:translateZ(-100px);
 }
 
-.after-flight-inner {
-  width: min(900px, calc(100% - 48px));
-  margin: auto;
+.ai-side:nth-child(5){
+  transform:rotateY(90deg) translateZ(-100px);
 }
 
-.after-flight h2 {
-  margin: 0;
-
-  font-size: clamp(45px, 9vw, 110px);
-  line-height: .85;
-
-  letter-spacing: -.07em;
+.ai-side:nth-child(6){
+  transform:rotateX(90deg) translateZ(-100px);
 }
 
-.after-flight p {
-  max-width: 620px;
-
-  margin-top: 35px;
-
-  color: #777;
-
-  font-size: clamp(16px, 2vw, 20px);
-  line-height: 1.7;
+@keyframes aiCube{
+  to{
+    transform:rotateX(360deg) rotateY(360deg);
+  }
 }
 
-/* =========================================================
-   AI WORKFORCE FEATURE
-========================================================= */
-
-.ai-section {
-  background: #050505;
-  color: #fff;
-
-  padding: 150px 0;
-}
-
-.ai-inner {
-  width: min(1150px, calc(100% - 48px));
-  margin: auto;
-}
-
-.ai-label {
-  color: #777;
-
-  font-size: 10px;
-  letter-spacing: .28em;
-  margin-bottom: 30px;
-}
-
-.ai-title {
-  margin: 0;
-
-  font-size: clamp(60px, 13vw, 180px);
-  line-height: .76;
-
-  letter-spacing: -.085em;
-
-  word-break: normal;
-  overflow-wrap: normal;
-}
-
-.ai-description {
-  margin-top: 60px;
-
-  max-width: 700px;
-
-  color: #777;
-
-  font-size: clamp(16px, 2vw, 21px);
-  line-height: 1.7;
-}
-
-.ai-description strong {
-  color: #fff;
-  font-weight: 500;
-}
 
 /* =========================================================
    DUO
 ========================================================= */
 
-.duo {
-  padding: 150px 0;
+.duo{
+  background:#f3f3f3;
+  color:#050505;
 
-  background: #fff;
+  padding:150px 0;
 }
 
-.duo-grid {
-  width: min(1050px, calc(100% - 48px));
-  margin: auto;
+.duo-grid{
+  width:min(1050px,calc(100% - 48px));
+  margin:auto;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  gap: 20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
 }
 
-.duo-card {
-  min-height: 380px;
+.duo-card{
+  min-height:400px;
 
-  padding: clamp(28px, 5vw, 55px);
+  padding:clamp(30px,5vw,60px);
 
-  border: 1px solid #ddd;
-  border-radius: 26px;
+  border:1px solid #d5d5d5;
+  border-radius:28px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 
   background:
     linear-gradient(
-      135deg,
+      145deg,
       rgba(255,255,255,.95),
-      rgba(247,247,247,.7)
+      rgba(235,235,235,.6)
     );
 
   box-shadow:
-    0 20px 60px rgba(0,0,0,.05);
+    0 30px 80px rgba(0,0,0,.06);
+
+  transform-style:preserve-3d;
+
+  transition:
+    transform .5s cubic-bezier(.2,.8,.2,1);
 }
 
-.duo-card span {
-  font-size: 9px;
-  letter-spacing: .25em;
-  color: #999;
+.duo-card:hover{
+  transform:
+    perspective(800px)
+    rotateX(3deg)
+    rotateY(-4deg)
+    translateY(-8px);
 }
 
-.duo-card h3 {
-  margin: 0;
-
-  font-size: clamp(38px, 6vw, 75px);
-  line-height: .85;
-  letter-spacing: -.07em;
+.duo-card small{
+  font-size:9px;
+  letter-spacing:.25em;
+  color:#999;
 }
+
+.duo-card h3{
+  margin:0;
+
+  font-size:clamp(40px,7vw,75px);
+  line-height:.82;
+
+  letter-spacing:-.075em;
+}
+
 
 /* =========================================================
    FUTURE
 ========================================================= */
 
-.future {
-  min-height: 80vh;
+.future{
+  position:relative;
 
-  background: #f4f4f4;
+  min-height:90vh;
 
-  padding: 150px 0;
+  display:flex;
+  align-items:center;
+
+  background:#050505;
+
+  overflow:hidden;
 }
 
-.future-inner {
-  width: min(1100px, calc(100% - 48px));
-  margin: auto;
+.future-content{
+  position:relative;
+  z-index:4;
+
+  width:min(1100px,calc(100% - 48px));
+  margin:auto;
 }
 
-.future-title {
-  margin: 0;
+.future-title{
+  margin:25px 0 0;
 
-  font-size: clamp(55px, 12vw, 160px);
-  line-height: .78;
+  font-size:clamp(60px,13vw,170px);
+  line-height:.76;
 
-  letter-spacing: -.08em;
+  letter-spacing:-.09em;
 }
 
-.future-copy {
-  margin-top: 55px;
+.future-copy{
+  max-width:600px;
 
-  max-width: 600px;
+  margin-top:50px;
 
-  font-size: clamp(16px, 2vw, 21px);
-  line-height: 1.7;
+  color:#666;
 
-  color: #777;
+  font-size:18px;
+  line-height:1.7;
 }
+
 
 /* =========================================================
-   LIMITLESS ENDING
+   FUTURE 3D GRID
 ========================================================= */
 
-.limitless {
-  min-height: 100svh;
-  min-height: 100vh;
+.future-grid{
+  position:absolute;
 
-  background: #050505;
-  color: #fff;
+  width:900px;
+  height:900px;
 
-  display: flex;
-  align-items: center;
+  right:-350px;
+  bottom:-450px;
 
-  padding: 100px 24px;
+  border-radius:50%;
 
-  position: relative;
+  border:1px solid rgba(255,255,255,.12);
+
+  box-shadow:
+    0 0 0 70px rgba(255,255,255,.015),
+    0 0 0 140px rgba(255,255,255,.012),
+    0 0 0 210px rgba(255,255,255,.009);
+
+  animation:
+    futureSpin 30s linear infinite;
 }
 
-.limitless-inner {
-  width: min(1250px, 100%);
-  margin: auto;
+@keyframes futureSpin{
+  to{
+    transform:rotate(360deg);
+  }
 }
 
-.limitless-title {
-  margin: 0;
-
-  font-size: clamp(70px, 17vw, 240px);
-  line-height: .72;
-
-  letter-spacing: -.095em;
-
-  font-weight: 900;
-}
-
-.limitless-line {
-  width: 100%;
-  height: 1px;
-
-  background: #333;
-
-  margin: 60px 0 30px;
-}
-
-.limitless-bottom {
-  display: flex;
-  justify-content: space-between;
-
-  font-size: 9px;
-  letter-spacing: .2em;
-
-  color: #666;
-}
 
 /* =========================================================
    FINAL
 ========================================================= */
 
-.final {
-  min-height: 45vh;
+.final{
+  min-height:100svh;
+  min-height:100vh;
 
-  background: #050505;
-  color: #fff;
+  display:flex;
+  align-items:center;
 
-  display: flex;
-  align-items: flex-end;
+  background:#fff;
+  color:#050505;
 
-  padding: 40px 24px;
+  text-align:center;
+
+  padding:100px 20px;
 }
 
-.final-inner {
-  width: min(1250px, 100%);
-  margin: auto;
+.final-inner{
+  width:min(1200px,100%);
+  margin:auto;
 }
 
-.final-text {
-  font-size: 11px;
-  letter-spacing: .2em;
-  color: #666;
+.final-title{
+  margin:0;
+
+  font-size:clamp(70px,17vw,230px);
+  line-height:.7;
+
+  letter-spacing:-.095em;
+  font-weight:900;
 }
 
-.final-name {
-  margin-top: 16px;
+.final-line{
+  width:100%;
+  height:1px;
 
-  font-size: clamp(18px, 3vw, 30px);
+  background:#ddd;
 
-  font-weight: 700;
-  letter-spacing: -.02em;
+  margin:60px 0 30px;
 }
+
+.final-meta{
+  display:flex;
+  justify-content:space-between;
+
+  color:#888;
+
+  font-size:9px;
+  letter-spacing:.2em;
+}
+
 
 /* =========================================================
-   SCROLL REVEAL
+   MOBILE
 ========================================================= */
 
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-
-  transition:
-    opacity .75s ease,
-    transform .75s cubic-bezier(.2,.75,.2,1);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 700px) {
+@media(max-width:700px){
 
   html,
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
+  body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
   }
 
-  .nav {
-    height: 62px;
-
-    padding:
-      0 18px;
+  .container{
+    width:calc(100% - 40px);
   }
 
-  .nav-brand {
-    font-size: 9px;
-    letter-spacing: .14em;
+  .nav{
+    height:60px;
+    padding:0 18px;
   }
 
-  .nav-right {
-    font-size: 8px;
+  .nav-brand{
+    font-size:8px;
   }
 
-  .hero {
-    padding:
-      100px 22px 70px;
+  .nav-number{
+    font-size:7px;
   }
 
-  .hero-title {
-    font-size: clamp(58px, 18vw, 110px);
-
-    max-width: 100%;
-
-    overflow-wrap: break-word;
+  .hero{
+    min-height:100svh;
   }
 
-  .hero-sub {
-    margin-top: 35px;
-
-    font-size: 15px;
+  .hero-content{
+    width:calc(100% - 40px);
   }
 
-  .hero-bottom {
-    left: 22px;
-    right: 22px;
-    bottom: 22px;
-
-    font-size: 7px;
+  .hero-title{
+    font-size:clamp(62px,18vw,105px);
+    max-width:100%;
   }
 
-  .section-inner {
-    width: calc(100% - 40px);
+  .hero-sub{
+    max-width:310px;
+    font-size:15px;
   }
 
-  .story-intro {
-    min-height: auto;
-    padding: 100px 0;
+  .hero-visual{
+    width:420px;
+    height:420px;
+
+    right:-220px;
+    top:68%;
   }
 
-  .story-intro-grid {
-    grid-template-columns: 1fr;
-    gap: 35px;
+  .core{
+    width:110px;
+    height:110px;
   }
 
-  .story-intro h2 {
-    font-size: clamp(45px, 14vw, 80px);
+  .core-face:nth-child(1){
+    transform:translateZ(55px);
   }
 
-  .story-intro p {
-    font-size: 16px;
+  .core-face:nth-child(2){
+    transform:rotateY(90deg) translateZ(55px);
   }
 
-  .story {
-    padding-top: 60px;
+  .core-face:nth-child(3){
+    transform:rotateX(90deg) translateZ(55px);
   }
 
-  .story-card-wrap {
-    width: calc(100% - 32px);
+  .core-face:nth-child(4){
+    transform:translateZ(-55px);
   }
 
-  .story-card {
-    margin-bottom: 55px;
-
-    padding: 28px 24px;
-
-    border-radius: 22px;
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+  .core-face:nth-child(5){
+    transform:rotateY(90deg) translateZ(-55px);
   }
 
-  .story-card h3 {
-    font-size: clamp(38px, 12vw, 65px);
+  .core-face:nth-child(6){
+    transform:rotateX(90deg) translateZ(-55px);
   }
 
-  .story-card p {
-    font-size: 15px;
+  .story{
+    padding-top:100px;
   }
 
-  /*
-    MOBILE FLIGHT LANE:
-    kept narrow so the rocket can NEVER cause horizontal overflow.
-  */
-
-  .flight-system {
-    width: calc(100% - 32px);
-    height: 760px;
-
-    margin-top: 0;
+  .story-intro{
+    grid-template-columns:1fr;
+    gap:35px;
   }
 
-  .rocket {
-    width: 62px;
-    height: 100px;
+  .story-heading{
+    font-size:clamp(50px,15vw,85px);
   }
 
-  .rocket-body {
-    width: 34px;
-    height: 70px;
+  .grid-world{
+    height:430px;
+    margin-top:80px;
+
+    background-size:38px 38px;
   }
 
-  .rocket-body::after {
-    border-left-width: 17px;
-    border-right-width: 17px;
-    border-top-width: 20px;
-    bottom: -15px;
+  .grid-object{
+    width:95px;
+    height:95px;
   }
 
-  .rocket-fin-left,
-  .rocket-fin-right {
-    top: 60px;
-    width: 23px;
-    height: 29px;
+  .cards{
+    width:calc(100% - 16px);
+    margin-top:-50px;
   }
 
-  .flight-path {
-    top: 70px;
-    bottom: 50px;
+  .glass-card{
+    min-height:300px;
+    padding:28px 24px;
+    border-radius:23px;
   }
 
-  .after-flight {
-    padding: 100px 0;
+  .glass-card h3{
+    margin-top:30px;
+    font-size:clamp(38px,12vw,65px);
   }
 
-  .after-flight-inner {
-    width: calc(100% - 40px);
+  .glass-card p{
+    font-size:15px;
   }
 
-  .ai-section {
-    padding: 100px 0;
+  .dark-transition{
+    min-height:75vh;
   }
 
-  .ai-inner {
-    width: calc(100% - 40px);
+  .transition-copy{
+    width:calc(100% - 40px);
   }
 
-  .ai-title {
-    /*
-      IMPORTANT:
-      Prevent AI WORKFORCE from exceeding mobile viewport.
-    */
-    font-size: clamp(55px, 16.5vw, 100px);
-    letter-spacing: -.085em;
-
-    max-width: 100%;
-
-    white-space: normal;
-    overflow-wrap: anywhere;
+  .transition-copy h2{
+    font-size:clamp(55px,16vw,100px);
   }
 
-  .ai-description {
-    margin-top: 40px;
-    font-size: 16px;
+  .ring-world{
+    width:500px;
+    height:500px;
+
+    right:-300px;
+    top:65%;
   }
 
-  .duo {
-    padding: 100px 0;
+  .ai{
+    padding:110px 0;
   }
 
-  .duo-grid {
-    width: calc(100% - 40px);
-
-    grid-template-columns: 1fr;
+  .ai-inner{
+    width:calc(100% - 40px);
   }
 
-  .duo-card {
-    min-height: 280px;
+  .ai-title{
+    font-size:clamp(55px,16.5vw,105px);
+    max-width:100%;
+    overflow-wrap:break-word;
   }
 
-  .future {
-    min-height: auto;
-
-    padding: 110px 0;
+  .ai-copy{
+    margin-top:45px;
+    font-size:16px;
   }
 
-  .future-inner {
-    width: calc(100% - 40px);
+  .ai-object{
+    width:250px;
+    height:250px;
+
+    right:-170px;
+    top:72%;
   }
 
-  .future-title {
-    font-size: clamp(55px, 16vw, 100px);
+  .ai-cube{
+    inset:55px;
   }
 
-  .limitless {
-    min-height: 85svh;
-    padding: 80px 20px;
+  .ai-side:nth-child(1){
+    transform:translateZ(70px);
   }
 
-  .limitless-title {
-    font-size: clamp(65px, 18vw, 120px);
+  .ai-side:nth-child(2){
+    transform:rotateY(90deg) translateZ(70px);
   }
 
-  .limitless-line {
-    margin: 40px 0 25px;
+  .ai-side:nth-child(3){
+    transform:rotateX(90deg) translateZ(70px);
   }
 
-  .limitless-bottom {
-    font-size: 7px;
+  .ai-side:nth-child(4){
+    transform:translateZ(-70px);
+  }
+
+  .ai-side:nth-child(5){
+    transform:rotateY(90deg) translateZ(-70px);
+  }
+
+  .ai-side:nth-child(6){
+    transform:rotateX(90deg) translateZ(-70px);
+  }
+
+  .duo{
+    padding:100px 0;
+  }
+
+  .duo-grid{
+    width:calc(100% - 40px);
+    grid-template-columns:1fr;
+  }
+
+  .duo-card{
+    min-height:290px;
+  }
+
+  .future{
+    min-height:85svh;
+  }
+
+  .future-content{
+    width:calc(100% - 40px);
+  }
+
+  .future-title{
+    font-size:clamp(58px,17vw,105px);
+  }
+
+  .future-copy{
+    font-size:16px;
+  }
+
+  .future-grid{
+    width:500px;
+    height:500px;
+
+    right:-280px;
+    bottom:-260px;
+  }
+
+  .final{
+    min-height:80svh;
+  }
+
+  .final-title{
+    font-size:clamp(70px,19vw,120px);
+  }
+
+  .final-meta{
+    font-size:7px;
   }
 }
+
 
 /* =========================================================
    REDUCED MOTION
 ========================================================= */
 
-@media (prefers-reduced-motion: reduce) {
+@media(prefers-reduced-motion:reduce){
 
-  html {
-    scroll-behavior: auto;
+  html{
+    scroll-behavior:auto;
   }
 
   *,
   *::before,
-  *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
+  *::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
   }
 
-  .story-card,
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
-
-  .rocket {
-    transform: translate3d(-50%, 0, 0);
+  .reveal{
+    opacity:1;
+    transform:none;
   }
 }
 </style>
@@ -1254,17 +1584,21 @@ a {
 ======================================================= -->
 
 <div class="loader" id="loader">
-  <div class="loader-inner">
-    <div class="loader-small">
+
+  <div class="loader-content">
+
+    <div class="loader-meta">
       MAGNUS VERITY × BL4Z3
     </div>
 
-    <div class="loader-title">
+    <div class="loader-word">
       LIMITLESS
     </div>
 
-    <div class="loader-line"></div>
+    <div class="loader-bar"></div>
+
   </div>
+
 </div>
 
 
@@ -1273,14 +1607,19 @@ a {
 ======================================================= -->
 
 <nav class="nav">
+
   <div class="nav-brand">
     MAGNUS VERITY × BL4Z3
   </div>
 
-  <div class="nav-right">
-    01 — LIMITLESS
+  <div class="nav-number">
+    01 — 09
   </div>
+
 </nav>
+
+
+<div class="page">
 
 
 <!-- =======================================================
@@ -1291,215 +1630,224 @@ a {
 
   <div class="hero-content">
 
-    <div class="eyebrow">
+    <div class="kicker hero-kicker">
       AN ONGOING EXPERIMENT
     </div>
 
     <h1 class="hero-title">
-      WE DON'T<br>
-      STOP.
+      <span>WE</span>
+      <span>DON'T</span>
+      <span>STOP.</span>
     </h1>
 
     <p class="hero-sub">
       Two minds. One obsession.
-      Build something that should not exist —
-      then build it anyway.
+      Build something impossible enough
+      that the only option is to keep going.
     </p>
 
   </div>
 
-  <div class="hero-bottom">
-    <span>SCROLL TO BEGIN</span>
-    <span>MAGNUS VERITY × BL4Z3</span>
+
+  <!-- LIVING 3D SYSTEM -->
+
+  <div class="hero-visual">
+
+    <div class="particles">
+
+      <i class="particle"
+         style="left:18%;top:22%;--x:20px;--y:-30px;--speed:4s"></i>
+
+      <i class="particle"
+         style="left:72%;top:18%;--x:-30px;--y:25px;--speed:5s"></i>
+
+      <i class="particle"
+         style="left:82%;top:65%;--x:20px;--y:-40px;--speed:6s"></i>
+
+      <i class="particle"
+         style="left:28%;top:78%;--x:-20px;--y:20px;--speed:4.5s"></i>
+
+      <i class="particle"
+         style="left:50%;top:8%;--x:15px;--y:30px;--speed:5.5s"></i>
+
+    </div>
+
+
+    <div class="orbit orbit-a"></div>
+    <div class="orbit orbit-b"></div>
+    <div class="orbit orbit-c"></div>
+
+
+    <div class="core">
+
+      <div class="core-face"></div>
+      <div class="core-face"></div>
+      <div class="core-face"></div>
+      <div class="core-face"></div>
+      <div class="core-face"></div>
+      <div class="core-face"></div>
+
+      <div class="core-dot"></div>
+
+    </div>
+
+  </div>
+
+
+  <div class="scroll-note">
+    SCROLL TO ENTER
   </div>
 
 </section>
 
 
 <!-- =======================================================
-     INTRO
+     STORY
 ======================================================= -->
 
-<section class="section story-intro">
+<section class="story">
 
-  <div class="section-inner story-intro-grid">
+  <div class="container">
 
-    <div class="section-number">
-      01 / BEFORE ANYTHING
+    <div class="story-intro">
+
+      <div class="kicker reveal">
+        01 / BEFORE ANYTHING
+      </div>
+
+      <div>
+
+        <h2 class="story-heading reveal">
+          THERE WAS<br>
+          ONLY THE<br>
+          IDEA.
+        </h2>
+
+        <p class="story-copy reveal">
+          No company. No audience.
+          No perfect roadmap.
+          Just the uncomfortable feeling
+          that something bigger could be built.
+        </p>
+
+      </div>
+
     </div>
 
-    <div>
-      <h2 class="reveal">
-        THERE WAS<br>
-        ONLY THE<br>
-        IDEA.
-      </h2>
 
-      <p class="reveal">
-        No company. No audience. No roadmap carved in stone.
-        Just the uncomfortable feeling that something bigger
-        could be built.
-      </p>
+    <!-- LIVING PERSPECTIVE WORLD -->
+
+    <div class="grid-world">
+
+      <div class="grid-object"></div>
+
     </div>
 
-  </div>
 
-</section>
+    <!-- GLASS STORY CARDS -->
 
+    <div class="cards">
 
-<!-- =======================================================
-     STORY + CARDS
-======================================================= -->
+      <article class="glass-card reveal">
 
-<section class="section story">
+        <div class="card-num">
+          02 / THE IDEA
+        </div>
 
-  <div class="story-card-wrap">
+        <h3>
+          THINK<br>
+          BIGGER.
+        </h3>
 
-    <!-- CARD 01 -->
+        <p>
+          The goal was never another tiny project.
+          It was to create systems capable of
+          doing something meaningful.
+        </p>
 
-    <article class="story-card">
-
-      <div class="card-index">
-        02 / THE IDEA
-      </div>
-
-      <h3>
-        THINK<br>
-        BIGGER.
-      </h3>
-
-      <p>
-        The goal was never to make another small project.
-        It was to create systems that could actually change
-        how people work.
-      </p>
-
-    </article>
+      </article>
 
 
-    <!-- CARD 02 -->
+      <article class="glass-card reveal">
 
-    <article class="story-card">
+        <div class="card-num">
+          03 / OBSESSION
+        </div>
 
-      <div class="card-index">
-        03 / OBSESSION
-      </div>
+        <h3>
+          THEN<br>
+          OBSESS.
+        </h3>
 
-      <h3>
-        THEN<br>
-        OBSESS.
-      </h3>
+        <p>
+          Ideas are easy.
+          Turning them into reality means
+          repeatedly confronting every problem
+          hiding underneath them.
+        </p>
 
-      <p>
-        Ideas are cheap.
-        Obsession is what turns them into something real.
-        Every detail became another problem to solve.
-      </p>
-
-    </article>
-
-
-    <!-- CARD 03 -->
-
-    <article class="story-card">
-
-      <div class="card-index">
-        04 / BUILD
-      </div>
-
-      <h3>
-        BUILD.
-      </h3>
-
-      <p>
-        Prototype.
-        Break it.
-        Rebuild it.
-        Keep going until the thing starts feeling alive.
-      </p>
-
-    </article>
+      </article>
 
 
-    <!-- CARD 04 -->
+      <article class="glass-card reveal">
 
-    <article class="story-card">
+        <div class="card-num">
+          04 / BUILD
+        </div>
 
-      <div class="card-index">
-        05 / BREAK
-      </div>
+        <h3>
+          BUILD.
+        </h3>
 
-      <h3>
-        BREAK.
-      </h3>
+        <p>
+          Prototype.
+          Test.
+          Break.
+          Rebuild.
+          Keep moving.
+        </p>
 
-      <p>
-        Bugs appeared.
-        Systems failed.
-        Things looked completely wrong.
-        None of that changed the objective.
-      </p>
-
-    </article>
-
-
-    <!-- CARD 05 -->
-
-    <article class="story-card">
-
-      <div class="card-index">
-        06 / REBUILD
-      </div>
-
-      <h3>
-        REBUILD<br>
-        BETTER.
-      </h3>
-
-      <p>
-        Reliability before decoration.
-        Security before scale.
-        Performance before flashy features.
-        The system had to work first.
-      </p>
-
-    </article>
-
-  </div>
+      </article>
 
 
-  <!-- =====================================================
-       ROCKET FLIGHT LANE
-  ====================================================== -->
+      <article class="glass-card reveal">
 
-  <div class="flight-system" id="flight">
+        <div class="card-num">
+          05 / BREAK
+        </div>
 
-    <div class="flight-label">
-      FORWARD
-    </div>
+        <h3>
+          BREAK.
+        </h3>
 
-    <div class="flight-path"></div>
+        <p>
+          Systems fail.
+          Bugs appear.
+          Designs collapse.
+          The answer isn't stopping.
+        </p>
 
-    <div class="rocket" id="rocket">
+      </article>
 
-      <div class="rocket-glow"></div>
 
-      <!-- fins -->
-      <div class="rocket-fin-left"></div>
-      <div class="rocket-fin-right"></div>
+      <article class="glass-card reveal">
 
-      <!-- body -->
-      <div class="rocket-body">
+        <div class="card-num">
+          06 / REBUILD
+        </div>
 
-        <div class="rocket-window"></div>
+        <h3>
+          REBUILD<br>
+          BETTER.
+        </h3>
 
-      </div>
+        <p>
+          Reliability before decoration.
+          Security before scale.
+          Performance before unnecessary complexity.
+        </p>
 
-      <!-- ENGINE AT TOP -->
-      <div class="rocket-engine"></div>
-
-      <!-- FLAME POINTS UP -->
-      <div class="rocket-flame"></div>
+      </article>
 
     </div>
 
@@ -1509,27 +1857,40 @@ a {
 
 
 <!-- =======================================================
-     AFTER FLIGHT
+     DARK TRANSITION
 ======================================================= -->
 
-<section class="section after-flight">
+<section class="dark-transition">
 
-  <div class="after-flight-inner">
+  <div class="transition-copy">
 
-    <div class="section-number reveal">
-      06 / THE FIRST MAJOR CREATION
+    <div class="kicker reveal">
+      07 / MOMENTUM
     </div>
 
     <h2 class="reveal">
-      SOMETHING<br>
-      FINALLY<br>
-      TOOK OFF.
+      THEN THE<br>
+      SYSTEM<br>
+      STARTED<br>
+      MOVING.
     </h2>
 
     <p class="reveal">
-      Not because everything was perfect.
-      Because the system survived everything thrown at it.
+      The idea stopped being an idea.
+      It became something that could actually
+      interact with the world.
     </p>
+
+  </div>
+
+
+  <div class="ring-world">
+
+    <div class="ring-big"></div>
+    <div class="ring-big"></div>
+    <div class="ring-big"></div>
+
+    <div class="ring-core"></div>
 
   </div>
 
@@ -1540,12 +1901,12 @@ a {
      AI WORKFORCE
 ======================================================= -->
 
-<section class="section ai-section">
+<section class="ai">
 
   <div class="ai-inner">
 
-    <div class="ai-label reveal">
-      07 / FIRST MAJOR CREATION
+    <div class="kicker ai-label reveal">
+      08 / FIRST MAJOR CREATION
     </div>
 
     <h2 class="ai-title reveal">
@@ -1553,16 +1914,18 @@ a {
       WORKFORCE
     </h2>
 
-    <div class="ai-description reveal">
+    <div class="ai-copy reveal">
 
       <p>
-        The first major system born from the obsession:
+        The first major system born from
+        the obsession:
         <strong>AI Workforce.</strong>
       </p>
 
       <p>
-        A global B2B SaaS built around AI employees that
-        work alongside humans — starting with an
+        A global B2B SaaS built around
+        AI employees that work alongside humans —
+        beginning with an
         <strong>AI Sales Manager.</strong>
       </p>
 
@@ -1575,6 +1938,24 @@ a {
 
   </div>
 
+
+  <!-- 3D CUBE -->
+
+  <div class="ai-object">
+
+    <div class="ai-cube">
+
+      <div class="ai-side"></div>
+      <div class="ai-side"></div>
+      <div class="ai-side"></div>
+      <div class="ai-side"></div>
+      <div class="ai-side"></div>
+      <div class="ai-side"></div>
+
+    </div>
+
+  </div>
+
 </section>
 
 
@@ -1582,15 +1963,15 @@ a {
      DUO
 ======================================================= -->
 
-<section class="section duo">
+<section class="duo">
 
   <div class="duo-grid">
 
     <div class="duo-card reveal">
 
-      <span>
+      <small>
         THE BUILDER
-      </span>
+      </small>
 
       <h3>
         MAGNUS<br>
@@ -1602,9 +1983,9 @@ a {
 
     <div class="duo-card reveal">
 
-      <span>
+      <small>
         THE SYSTEM
-      </span>
+      </small>
 
       <h3>
         BL4Z3
@@ -1621,12 +2002,12 @@ a {
      FUTURE
 ======================================================= -->
 
-<section class="section future">
+<section class="future">
 
-  <div class="future-inner">
+  <div class="future-content">
 
-    <div class="section-number reveal">
-      08 / WHAT'S NEXT
+    <div class="kicker reveal">
+      09 / WHAT'S NEXT
     </div>
 
     <h2 class="future-title reveal">
@@ -1636,32 +2017,36 @@ a {
     </h2>
 
     <p class="future-copy reveal">
-      AI Workforce is only one system.
+      AI Workforce is one system.
       The bigger objective is to keep building —
-      better products, better systems, better ideas.
+      better products, better systems,
+      better ideas.
     </p>
 
   </div>
+
+
+  <div class="future-grid"></div>
 
 </section>
 
 
 <!-- =======================================================
-     LIMITLESS
+     FINAL
 ======================================================= -->
 
-<section class="limitless">
+<section class="final">
 
-  <div class="limitless-inner">
+  <div class="final-inner">
 
-    <h2 class="limitless-title">
+    <h2 class="final-title">
       LIMIT<br>
       LESS.
     </h2>
 
-    <div class="limitless-line"></div>
+    <div class="final-line"></div>
 
-    <div class="limitless-bottom">
+    <div class="final-meta">
 
       <span>
         NO FINISH LINE
@@ -1678,220 +2063,161 @@ a {
 </section>
 
 
-<!-- =======================================================
-     FINAL
-======================================================= -->
-
-<section class="final">
-
-  <div class="final-inner">
-
-    <div class="final-text">
-      KEEP BUILDING.
-    </div>
-
-    <div class="final-name">
-      Magnus Verity × BL4Z3
-    </div>
-
-  </div>
-
-</section>
+</div>
 
 
 <script>
+
 /* =========================================================
    LOADER
 ========================================================= */
 
-window.addEventListener("load", () => {
+window.addEventListener("load",()=>{
 
-  setTimeout(() => {
-    const loader = document.getElementById("loader");
+  setTimeout(()=>{
 
-    if (loader) {
-      loader.classList.add("hidden");
+    document
+      .getElementById("loader")
+      .classList.add("hide");
+
+  },1900);
+
+});
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+const revealElements =
+  document.querySelectorAll(".reveal");
+
+const observer =
+  new IntersectionObserver(
+    entries=>{
+
+      entries.forEach(entry=>{
+
+        if(!entry.isIntersecting) return;
+
+        entry.target.classList.add("visible");
+
+        observer.unobserve(entry.target);
+
+      });
+
+    },
+    {
+      threshold:.12,
+      rootMargin:"0px 0px -50px 0px"
     }
-  }, 1900);
+  );
 
+revealElements.forEach(el=>{
+  observer.observe(el);
 });
 
 
 /* =========================================================
-   REVEAL SYSTEM
-   Lightweight IntersectionObserver.
+   LIGHTWEIGHT SCROLL PARALLAX
 ========================================================= */
 
-const revealItems = document.querySelectorAll(
-  ".reveal, .story-card"
-);
+const visual =
+  document.querySelector(".hero-visual");
 
-const revealObserver = new IntersectionObserver(
-  (entries, observer) => {
+let ticking=false;
 
-    entries.forEach(entry => {
+function updateScroll(){
 
-      if (!entry.isIntersecting) return;
-
-      entry.target.classList.add("visible");
-
-      observer.unobserve(entry.target);
-
-    });
-
-  },
-  {
-    threshold: 0.12,
-    rootMargin: "0px 0px -60px 0px"
-  }
-);
-
-revealItems.forEach(item => {
-  revealObserver.observe(item);
-});
-
-
-/* =========================================================
-   ROCKET SCROLL ENGINE
-========================================================= */
-
-const rocket = document.getElementById("rocket");
-const flight = document.getElementById("flight");
-
-let ticking = false;
-
-function updateRocket() {
-
-  if (!rocket || !flight) {
-    ticking = false;
+  if(!visual){
+    ticking=false;
     return;
   }
 
-  const rect = flight.getBoundingClientRect();
-
-  const viewport = window.innerHeight;
-
-  /*
-    Start movement when flight lane enters viewport.
-  */
-
-  const start = viewport * 0.82;
+  const scroll =
+    window.scrollY;
 
   /*
-    Progress from 0 → 1 while the lane travels
-    through the viewport.
+    Very subtle movement.
+    Transform only = GPU friendly.
   */
 
-  const distance = viewport + rect.height * 0.55;
+  if(scroll < window.innerHeight * 1.2){
 
-  let progress =
-    (start - rect.top) / distance;
+    const movement =
+      Math.min(scroll * .08,70);
 
-  progress = Math.max(
-    0,
-    Math.min(1, progress)
-  );
+    const rotation =
+      Math.min(scroll * .015,8);
 
-  /*
-    Rocket vertical travel.
-  */
+    visual.style.transform =
+      `translate3d(0,calc(-50% + ${movement}px),0)
+       rotate(${rotation}deg)`;
 
-  const maxTravel =
-    Math.max(
-      0,
-      flight.clientHeight - 190
-    );
-
-  const y =
-    30 + progress * maxTravel;
-
-  /*
-    Subtle horizontal movement.
-    NEVER enough to escape the flight lane.
-  */
-
-  const zigzag =
-    Math.sin(progress * Math.PI * 4) * 55;
-
-  /*
-    Subtle banking while travelling.
-  */
-
-  const rotation =
-    Math.sin(progress * Math.PI * 4) * 5;
-
-  rocket.style.transform =
-    `translate3d(calc(-50% + ${zigzag}px), ${y}px, 0) rotate(${rotation}deg)`;
-
-  /*
-    Activate engine once the rocket starts moving.
-  */
-
-  if (progress > .04) {
-    rocket.classList.add("active");
-  } else {
-    rocket.classList.remove("active");
   }
 
-  ticking = false;
-}
-
-function requestRocketUpdate() {
-
-  if (ticking) return;
-
-  ticking = true;
-
-  requestAnimationFrame(updateRocket);
+  ticking=false;
 }
 
 window.addEventListener(
   "scroll",
-  requestRocketUpdate,
-  { passive: true }
-);
+  ()=>{
 
-window.addEventListener(
-  "resize",
-  requestRocketUpdate
-);
+    if(ticking) return;
 
-requestRocketUpdate();
+    ticking=true;
+
+    requestAnimationFrame(updateScroll);
+
+  },
+  {passive:true}
+);
 
 
 /* =========================================================
-   MOBILE PERFORMANCE
+   DESKTOP CARD TILT
+   Disabled on touch devices.
 ========================================================= */
 
-const isMobile =
-  window.matchMedia("(max-width: 700px)").matches;
+const canHover =
+  window.matchMedia("(hover:hover)").matches;
 
-if (isMobile) {
+if(canHover){
 
-  /*
-    Reduce rocket zig-zag amplitude on smaller screens.
-    We do this through a CSS variable-like approach by
-    modifying the calculation only when necessary.
-  */
+  document
+    .querySelectorAll(".duo-card")
+    .forEach(card=>{
 
-  const originalUpdateRocket = updateRocket;
+      card.addEventListener("pointermove",e=>{
+
+        const rect =
+          card.getBoundingClientRect();
+
+        const x =
+          (e.clientX - rect.left) / rect.width - .5;
+
+        const y =
+          (e.clientY - rect.top) / rect.height - .5;
+
+        card.style.transform =
+          `perspective(900px)
+           rotateX(${y * -6}deg)
+           rotateY(${x * 7}deg)
+           translateY(-8px)`;
+
+      });
+
+      card.addEventListener("pointerleave",()=>{
+
+        card.style.transform="";
+
+      });
+
+    });
 
 }
-
-
-/* =========================================================
-   EXTRA SAFETY AGAINST HORIZONTAL OVERFLOW
-========================================================= */
-
-function enforceViewportWidth() {
-
-  document.documentElement.style.maxWidth = "100%";
-  document.body.style.maxWidth = "100%";
-}
-
-enforceViewportWidth();
 
 </script>
 
 </body>
-  </html>
+        </html>
