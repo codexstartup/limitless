@@ -1,544 +1,1039 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magnus Verity × BL4Z3 — Limitless</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>LIMITLESS — Magnus Verity × BL4Z3</title>
+
+<meta
+  name="description"
+  content="Magnus Verity × BL4Z3 — The OG Duo. Building without a ceiling."
+>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  background:#050505;
-  color:#f5f5f5;
-  font-family:Inter,Arial,sans-serif;
-  overflow-x:hidden;
-  cursor:default;
+:root{
+  --bg:#050505;
+  --fg:#f5f5f2;
+  --muted:#777;
+  --line:#202020;
+  --ease:cubic-bezier(.16,1,.3,1);
 }
-a{text-decoration:none;color:inherit}
 
-::selection{background:#fff;color:#000}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+  background:var(--bg);
+}
+
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:Inter,system-ui,sans-serif;
+  overflow-x:hidden;
+}
 
 body:before{
   content:"";
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:999;
+  z-index:9999;
   opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.cursor{
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+::selection{
+  background:#fff;
+  color:#000;
+}
+
+/* LOADER */
+
+#loader{
   position:fixed;
-  width:420px;
-  height:420px;
-  border-radius:50%;
-  pointer-events:none;
-  background:radial-gradient(circle,rgba(255,255,255,.075),transparent 65%);
-  transform:translate(-50%,-50%);
-  z-index:0;
+  inset:0;
+  background:#050505;
+  z-index:10000;
+  display:grid;
+  place-items:center;
+  transition:
+    opacity 1s var(--ease),
+    visibility 1s;
 }
 
-nav{
+#loader.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+.loader{
+  text-align:center;
+}
+
+.loader h1{
+  font-size:clamp(55px,11vw,150px);
+  font-weight:900;
+  letter-spacing:-.1em;
+  line-height:.8;
+  overflow:hidden;
+}
+
+.loader h1 span{
+  display:block;
+  transform:translateY(110%);
+  animation:rise 1s .2s var(--ease) forwards;
+}
+
+.loader p{
+  font:10px "DM Mono",monospace;
+  letter-spacing:.22em;
+  color:#555;
+  margin-top:25px;
+}
+
+@keyframes rise{
+  to{
+    transform:translateY(0);
+  }
+}
+
+/* PROGRESS */
+
+#progress{
+  position:fixed;
+  top:0;
+  left:0;
+  height:2px;
+  width:0;
+  background:#fff;
+  z-index:9000;
+}
+
+/* NAV */
+
+.nav{
   position:fixed;
   top:0;
   left:0;
   width:100%;
-  z-index:100;
-  padding:24px 5vw;
+  padding:23px 4vw;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  z-index:8000;
   mix-blend-mode:difference;
 }
 
-.logo{
-  font-weight:800;
-  letter-spacing:-.04em;
-  font-size:15px;
-}
-
-.navlinks{
-  display:flex;
-  gap:28px;
+.brand{
   font-size:12px;
-  color:#bbb;
+  font-weight:800;
+  letter-spacing:-.03em;
 }
 
-.navlinks a{transition:.3s}
-.navlinks a:hover{color:#fff}
-
-.hero{
-  min-height:100vh;
+.links{
   display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding:12vh 7vw 8vh;
+  gap:24px;
+  font:10px "DM Mono",monospace;
+  color:#aaa;
+}
+
+.links a{
+  transition:.3s;
+}
+
+.links a:hover{
+  color:#fff;
+}
+
+/* CURSOR */
+
+.cursor-dot{
+  position:fixed;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#fff;
+  pointer-events:none;
+  z-index:9998;
+  mix-blend-mode:difference;
+}
+
+.cursor-ring{
+  position:fixed;
+  width:40px;
+  height:40px;
+  border:1px solid #777;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9997;
+  mix-blend-mode:difference;
+  transition:
+    width .35s var(--ease),
+    height .35s var(--ease);
+}
+
+.cursor-ring.big{
+  width:74px;
+  height:74px;
+}
+
+/* GENERAL */
+
+section{
   position:relative;
   overflow:hidden;
+}
+
+/* HERO */
+
+.hero{
+  height:100svh;
+  min-height:700px;
+  display:flex;
+  align-items:center;
+  padding:0 5vw;
 }
 
 .grid{
   position:absolute;
-  inset:-20%;
-  opacity:.18;
-  background-image:
-    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
-  background-size:80px 80px;
-  transform:perspective(700px) rotateX(62deg) translateY(20%);
-  animation:gridMove 18s linear infinite;
-  mask-image:linear-gradient(to bottom,transparent,#000 35%,#000 70%,transparent);
+  inset:-30%;
+  opacity:.16;
+  transform:
+    perspective(900px)
+    rotateX(62deg)
+    translateY(25%);
 }
 
-@keyframes gridMove{
-  to{transform:perspective(700px) rotateX(62deg) translateY(28%)}
+.grid:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.11) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.11) 1px,
+      transparent 1px
+    );
+  background-size:75px 75px;
+  animation:gridmove 13s linear infinite;
+}
+
+@keyframes gridmove{
+  to{
+    transform:translateY(75px);
+  }
 }
 
 .orbit{
   position:absolute;
-  width:55vw;
-  height:55vw;
-  max-width:800px;
-  max-height:800px;
+  width:min(62vw,800px);
+  height:min(62vw,800px);
   border:1px solid rgba(255,255,255,.08);
   border-radius:50%;
   right:-15%;
-  top:12%;
-  animation:spin 25s linear infinite;
+  top:8%;
+  animation:spin 28s linear infinite;
 }
 
+.orbit:before,
 .orbit:after{
   content:"";
   position:absolute;
-  width:8px;height:8px;
-  border-radius:50%;
   background:#fff;
-  top:10%;
-  left:12%;
-  box-shadow:0 0 30px #fff;
+  border-radius:50%;
+  box-shadow:0 0 35px rgba(255,255,255,.4);
 }
 
-@keyframes spin{to{transform:rotate(360deg)}}
+.orbit:before{
+  width:7px;
+  height:7px;
+  left:17%;
+  top:7%;
+}
 
+.orbit:after{
+  width:4px;
+  height:4px;
+  right:9%;
+  bottom:20%;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.hero-content{
+  width:100%;
+  max-width:1550px;
+  position:relative;
+  z-index:2;
+}
+
+.eyebrow,
 .kicker{
-  position:relative;
-  z-index:2;
-  font-size:11px;
+  font:10px "DM Mono",monospace;
+  letter-spacing:.22em;
+  color:#666;
   text-transform:uppercase;
-  letter-spacing:.28em;
-  color:#777;
-  margin-bottom:25px;
-  animation:fadeUp 1s ease both;
 }
 
-.hero h1{
-  position:relative;
-  z-index:2;
-  font-size:clamp(64px,11vw,170px);
-  line-height:.83;
-  letter-spacing:-.085em;
+.eyebrow{
+  margin-bottom:28px;
+}
+
+.hero-title{
+  font-size:clamp(70px,14vw,220px);
   font-weight:900;
-  max-width:1100px;
+  letter-spacing:-.11em;
+  line-height:.75;
 }
 
-.hero h1 span{
+.clip{
   display:block;
   overflow:hidden;
 }
 
-.hero h1 .line{
+.word{
   display:block;
-  animation:heroReveal 1.1s cubic-bezier(.16,1,.3,1) both;
+  transform:translateY(110%);
+  opacity:0;
 }
 
-.hero h1 .delay{animation-delay:.14s}
-
-@keyframes heroReveal{
-  from{transform:translateY(110%);opacity:0}
-  to{transform:translateY(0);opacity:1}
+.word.show{
+  animation:titleIn 1.25s var(--ease) forwards;
 }
 
-.hero-sub{
-  position:relative;
-  z-index:2;
-  margin-top:45px;
-  max-width:610px;
-  color:#999;
-  font-size:clamp(16px,2vw,21px);
-  line-height:1.6;
-  animation:fadeUp 1s .5s ease both;
+.word:nth-child(2).show{
+  animation-delay:.12s;
 }
 
-.cta-row{
-  position:relative;
-  z-index:2;
+@keyframes titleIn{
+  to{
+    transform:translateY(0);
+    opacity:1;
+  }
+}
+
+.hero-bottom{
   display:flex;
-  gap:14px;
-  margin-top:38px;
-  animation:fadeUp 1s .7s ease both;
+  justify-content:space-between;
+  align-items:end;
+  gap:40px;
+  margin-top:48px;
 }
 
-.btn{
-  padding:16px 22px;
+.hero-copy{
+  max-width:580px;
+  color:#888;
+  font-size:16px;
+  line-height:1.7;
+}
+
+.hero-meta{
+  font:9px "DM Mono",monospace;
+  color:#555;
+  line-height:1.9;
+  text-align:right;
+}
+
+.cta{
+  display:inline-flex;
+  margin-top:28px;
   border:1px solid #333;
-  border-radius:100px;
-  font-size:13px;
-  font-weight:600;
-  transition:.35s cubic-bezier(.16,1,.3,1);
+  border-radius:999px;
+  padding:15px 20px;
+  font-size:12px;
+  font-weight:700;
+  transition:.5s var(--ease);
 }
 
-.btn.primary{
+.cta:hover{
   background:#fff;
   color:#000;
-  border-color:#fff;
-}
-
-.btn:hover{
-  transform:translateY(-4px);
-  border-color:#fff;
-}
-
-.btn.primary:hover{
-  box-shadow:0 15px 50px rgba(255,255,255,.13);
+  transform:translateY(-5px);
+  box-shadow:0 20px 70px rgba(255,255,255,.12);
 }
 
 .scroll{
   position:absolute;
-  bottom:35px;
-  left:7vw;
-  font-size:10px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
+  bottom:28px;
+  left:5vw;
+  font:9px "DM Mono",monospace;
   color:#555;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-transform:uppercase;
+  letter-spacing:.16em;
 }
 
-section{
-  position:relative;
-  padding:150px 7vw;
-  border-top:1px solid #151515;
+.scroll i{
+  width:55px;
+  height:1px;
+  background:#333;
+  display:block;
   overflow:hidden;
 }
 
-.section-label{
-  font-size:10px;
-  letter-spacing:.25em;
-  text-transform:uppercase;
-  color:#555;
-  margin-bottom:35px;
+.scroll i:after{
+  content:"";
+  display:block;
+  width:24px;
+  height:1px;
+  background:#fff;
+  animation:travel 1.7s infinite;
 }
 
-.big{
-  font-size:clamp(42px,7vw,105px);
-  letter-spacing:-.075em;
-  line-height:.92;
-  max-width:1100px;
+@keyframes travel{
+  from{
+    transform:translateX(-25px);
+  }
+  to{
+    transform:translateX(55px);
+  }
+}
+
+/* STORY */
+
+.story{
+  padding:180px 7vw;
+}
+
+.statement{
+  font-size:clamp(45px,8vw,125px);
   font-weight:800;
+  letter-spacing:-.09em;
+  line-height:.9;
+  max-width:1250px;
+  margin-top:42px;
 }
 
-.muted{color:#666}
-
-.reveal{
-  opacity:0;
-  transform:translateY(70px);
-  transition:1s cubic-bezier(.16,1,.3,1);
+.dim{
+  color:#505050;
 }
 
-.reveal.active{
-  opacity:1;
-  transform:translateY(0);
+.story-note{
+  max-width:430px;
+  margin:70px 0 0 auto;
+  color:#777;
+  line-height:1.8;
+  font-size:14px;
 }
 
-.ambition{
-  min-height:90vh;
+/* CHAPTER */
+
+.chapter{
+  min-height:100vh;
+  padding:150px 7vw;
   display:flex;
   align-items:center;
 }
 
-.ambition .big{
-  max-width:1050px;
+.chapter-inner{
+  width:100%;
+  max-width:1400px;
 }
 
-.statement{
-  margin-top:55px;
-  max-width:620px;
-  color:#888;
-  line-height:1.8;
-  font-size:16px;
+.chapter-title{
+  font-size:clamp(60px,10vw,150px);
+  font-weight:900;
+  letter-spacing:-.1em;
+  line-height:.78;
+  margin-top:30px;
 }
+
+.chapter-text{
+  max-width:600px;
+  color:#777;
+  line-height:1.8;
+  font-size:15px;
+  margin-top:45px;
+}
+
+/* DUO */
 
 .duo{
   min-height:100vh;
+  padding:150px 5vw;
+  background:#080808;
+}
+
+.duo-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:65px;
+}
+
+.duo-head h2{
+  font-size:clamp(55px,10vw,145px);
+  font-weight:900;
+  letter-spacing:-.1em;
+  line-height:.76;
+}
+
+.duo-head p{
+  font:10px "DM Mono",monospace;
+  color:#555;
+  line-height:1.8;
+  text-align:right;
 }
 
 .duo-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:20px;
-  margin-top:80px;
+  gap:2px;
+  max-width:1300px;
+  margin:auto;
 }
 
 .duo-card{
-  min-height:430px;
-  border:1px solid #202020;
-  border-radius:28px;
-  padding:42px;
+  height:650px;
+  background:#050505;
+  border:1px solid #1d1d1d;
   position:relative;
   overflow:hidden;
-  background:linear-gradient(145deg,#0c0c0c,#070707);
-  transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .5s;
+  padding:40px;
+  transition:
+    transform .65s var(--ease),
+    border-color .5s;
 }
 
 .duo-card:hover{
-  transform:translateY(-10px) rotateX(2deg);
   border-color:#444;
 }
 
 .duo-card:before{
   content:"";
   position:absolute;
-  width:280px;height:280px;
+  width:500px;
+  height:500px;
   border-radius:50%;
-  right:-100px;top:-100px;
-  background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);
+  left:50%;
+  top:45%;
+  transform:translate(-50%,-50%);
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.08),
+      transparent 68%
+    );
+  transition:transform 1s var(--ease);
 }
 
-.duo-name{
-  font-size:clamp(34px,4vw,58px);
-  font-weight:800;
-  letter-spacing:-.06em;
+.duo-card:hover:before{
+  transform:
+    translate(-50%,-50%)
+    scale(1.25);
 }
 
-.duo-role{
-  margin-top:12px;
-  color:#666;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.18em;
+.card-num{
+  font:10px "DM Mono",monospace;
+  color:#555;
 }
 
-.duo-text{
+.card-orbit{
   position:absolute;
-  bottom:42px;
+  width:320px;
+  height:320px;
+  border:1px solid #222;
+  border-radius:50%;
+  right:-55px;
+  top:70px;
+  animation:spin 18s linear infinite;
+}
+
+.card-orbit:after{
+  content:"";
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:#fff;
+  border-radius:50%;
+  top:5%;
+  left:50%;
+  box-shadow:0 0 25px #fff;
+}
+
+.card-name{
+  position:absolute;
+  left:40px;
+  bottom:110px;
+  font-size:clamp(42px,6vw,90px);
+  font-weight:900;
+  letter-spacing:-.09em;
+  line-height:.78;
+}
+
+.card-role{
+  position:absolute;
   left:42px;
-  right:42px;
-  color:#888;
-  line-height:1.7;
-  font-size:14px;
+  bottom:54px;
+  font:9px "DM Mono",monospace;
+  color:#666;
+  letter-spacing:.14em;
+  text-transform:uppercase;
 }
 
-.og{
-  padding:120px 7vw;
+/* CINEMATIC MOMENTS */
+
+.moment{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
   text-align:center;
+  padding:120px 7vw;
 }
 
-.og-word{
-  font-size:clamp(70px,16vw,230px);
+.moment-word{
+  font-size:clamp(85px,19vw,280px);
+  font-weight:900;
+  letter-spacing:-.12em;
+  line-height:.7;
+  opacity:.06;
+  transform:scale(.72);
+  transition:1.5s var(--ease);
+}
+
+.moment.active .moment-word{
+  opacity:1;
+  transform:scale(1);
+}
+
+.moment p{
+  color:#666;
+  max-width:520px;
+  line-height:1.8;
+  margin:55px auto 0;
+}
+
+/* BUILD */
+
+.build{
+  padding:170px 7vw;
+}
+
+.build-top{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
+  align-items:end;
+}
+
+.build-title{
+  font-size:clamp(60px,10vw,145px);
+  font-weight:900;
+  letter-spacing:-.1em;
+  line-height:.77;
+}
+
+.build-copy{
+  max-width:480px;
+  color:#777;
+  line-height:1.8;
+  font-size:15px;
+}
+
+.system{
+  margin-top:100px;
+  border-top:1px solid #222;
+}
+
+.system-row{
+  display:grid;
+  grid-template-columns:90px 1fr auto;
+  gap:30px;
+  align-items:center;
+  padding:32px 0;
+  border-bottom:1px solid #222;
+  transition:.5s var(--ease);
+}
+
+.system-row:hover{
+  padding-left:20px;
+  background:#080808;
+}
+
+.system-row .num{
+  font:10px "DM Mono",monospace;
+  color:#555;
+}
+
+.system-row h3{
+  font-size:clamp(28px,4vw,55px);
+  letter-spacing:-.07em;
+}
+
+.system-row span{
+  font:9px "DM Mono",monospace;
+  color:#555;
+  text-transform:uppercase;
+}
+
+/* AI WORKFORCE */
+
+.creation{
+  padding:160px 5vw;
+  background:#080808;
+}
+
+.creation-frame{
+  min-height:680px;
+  border:1px solid #202020;
+  padding:70px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(
+      circle at 78% 35%,
+      rgba(255,255,255,.09),
+      transparent 24%
+    ),
+    #050505;
+}
+
+.creation-frame:after{
+  content:"AI WORKFORCE";
+  position:absolute;
+  right:-4%;
+  bottom:-12%;
+  font-size:clamp(100px,18vw,280px);
+  font-weight:900;
+  letter-spacing:-.1em;
+  color:rgba(255,255,255,.025);
+  white-space:nowrap;
+}
+
+.creation-label{
+  font:10px "DM Mono",monospace;
+  color:#555;
+  letter-spacing:.2em;
+}
+
+.creation-title{
+  font-size:clamp(65px,10vw,155px);
   font-weight:900;
   letter-spacing:-.1em;
   line-height:.75;
-  background:linear-gradient(180deg,#fff,#333);
-  -webkit-background-clip:text;
-  color:transparent;
+  margin-top:28px;
 }
 
-.og p{
-  max-width:600px;
-  margin:55px auto 0;
+.creation-copy{
+  max-width:550px;
   color:#777;
   line-height:1.8;
+  margin-top:38px;
 }
 
-.timeline{
-  display:grid;
-  grid-template-columns:120px 1fr;
-  gap:40px;
-  max-width:1000px;
+.creation-btn{
+  width:max-content;
+  position:relative;
+  z-index:2;
+  margin-top:38px;
+  background:#fff;
+  color:#000;
+  padding:17px 23px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  transition:.5s var(--ease);
+}
+
+.creation-btn:hover{
+  transform:translateY(-6px) scale(1.03);
+  box-shadow:0 25px 90px rgba(255,255,255,.12);
+}
+
+/* LESSONS */
+
+.lessons{
+  padding:170px 7vw;
+}
+
+.lesson-grid{
   margin-top:80px;
-}
-
-.event{
-  padding:28px 0;
   border-top:1px solid #222;
 }
 
-.event-year{
+.lesson{
+  display:grid;
+  grid-template-columns:90px 1fr;
+  gap:30px;
+  padding:36px 0;
+  border-bottom:1px solid #222;
+}
+
+.lesson-no{
+  font:10px "DM Mono",monospace;
   color:#555;
-  font-size:12px;
-  letter-spacing:.1em;
 }
 
-.event h3{
-  font-size:clamp(25px,3vw,42px);
-  letter-spacing:-.05em;
-  margin-bottom:12px;
+.lesson h3{
+  font-size:clamp(30px,5vw,65px);
+  letter-spacing:-.07em;
 }
 
-.event p{
-  color:#777;
-  line-height:1.7;
-  max-width:650px;
+.lesson p{
+  color:#666;
+  line-height:1.8;
+  margin-top:14px;
+  max-width:600px;
   font-size:14px;
 }
 
-.creation{
-  min-height:100vh;
-}
-
-.creation-box{
-  margin-top:70px;
-  border:1px solid #222;
-  border-radius:35px;
-  padding:65px;
-  background:
-    radial-gradient(circle at 80% 20%,rgba(255,255,255,.07),transparent 25%),
-    #080808;
-  position:relative;
-  overflow:hidden;
-}
-
-.creation-box h3{
-  font-size:clamp(45px,7vw,100px);
-  letter-spacing:-.08em;
-  line-height:.9;
-}
-
-.creation-box p{
-  color:#777;
-  max-width:560px;
-  line-height:1.8;
-  margin-top:35px;
-}
-
-.enter{
-  display:inline-flex;
-  align-items:center;
-  gap:15px;
-  margin-top:45px;
-  padding:19px 25px;
-  border-radius:100px;
-  background:#fff;
-  color:#000;
-  font-size:13px;
-  font-weight:700;
-  transition:.4s cubic-bezier(.16,1,.3,1);
-}
-
-.enter:hover{
-  transform:scale(1.05);
-  box-shadow:0 20px 70px rgba(255,255,255,.12);
-}
-
-.arrow{
-  transition:.3s;
-}
-.enter:hover .arrow{transform:translate(5px,-5px)}
+/* FUTURE */
 
 .future{
   min-height:100vh;
+  padding:160px 7vw;
   display:flex;
   flex-direction:column;
   justify-content:center;
 }
 
-.future-list{
-  margin-top:75px;
-  border-top:1px solid #222;
+.future-title{
+  font-size:clamp(70px,13vw,190px);
+  font-weight:900;
+  letter-spacing:-.115em;
+  line-height:.72;
+  margin-top:38px;
 }
 
-.future-item{
+.future-title span{
+  color:#3e3e3e;
+}
+
+.future-copy{
+  max-width:540px;
+  color:#777;
+  line-height:1.8;
+  margin-top:55px;
+}
+
+.pills{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:28px 0;
-  border-bottom:1px solid #222;
-  transition:.35s;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:35px;
 }
 
-.future-item:hover{
-  padding-left:18px;
-  padding-right:18px;
-  background:#0b0b0b;
+.pill{
+  border:1px solid #252525;
+  border-radius:999px;
+  padding:10px 14px;
+  color:#777;
+  font:9px "DM Mono",monospace;
 }
 
-.future-item span:first-child{
-  font-size:clamp(25px,4vw,52px);
-  font-weight:700;
-  letter-spacing:-.06em;
-}
-
-.future-item span:last-child{
-  color:#555;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.15em;
-}
+/* FINAL */
 
 .final{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  height:100svh;
+  min-height:700px;
+  display:grid;
+  place-items:center;
   text-align:center;
 }
 
-.final h2{
-  font-size:clamp(55px,11vw,150px);
-  line-height:.82;
-  letter-spacing:-.09em;
+.final:before{
+  content:"";
+  position:absolute;
+  width:65vw;
+  height:65vw;
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.09),
+      transparent 65%
+    );
+  animation:breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe{
+  50%{
+    transform:scale(1.16);
+    opacity:.6;
+  }
+}
+
+.final-inner{
+  position:relative;
+  z-index:2;
+}
+
+.final-small{
+  font:10px "DM Mono",monospace;
+  color:#555;
+  letter-spacing:.2em;
+}
+
+.final-title{
+  font-size:clamp(80px,17vw,250px);
   font-weight:900;
+  letter-spacing:-.12em;
+  line-height:.66;
+  margin:38px 0;
 }
 
-.final p{
+.final-sub{
   color:#666;
-  margin-top:35px;
-  font-size:14px;
+  line-height:1.8;
 }
 
-.final .cta-row{
-  justify-content:center;
+.final-btn{
+  display:inline-flex;
+  margin-top:35px;
+  border:1px solid #333;
+  padding:16px 23px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  transition:.5s var(--ease);
 }
+
+.final-btn:hover{
+  background:#fff;
+  color:#000;
+  transform:translateY(-5px);
+}
+
+/* FOOTER */
 
 footer{
-  padding:30px 7vw;
-  border-top:1px solid #151515;
+  border-top:1px solid #181818;
+  padding:25px 5vw;
   display:flex;
   justify-content:space-between;
   color:#444;
-  font-size:10px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
+  font:9px "DM Mono",monospace;
+  letter-spacing:.1em;
 }
 
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(25px)}
-  to{opacity:1;transform:translateY(0)}
+/* REVEAL */
+
+.reveal{
+  opacity:0;
+  transform:translateY(65px);
+  transition:
+    opacity 1s var(--ease),
+    transform 1.1s var(--ease);
 }
 
-@media(max-width:700px){
-  nav{padding:20px 5vw}
-  .navlinks{display:none}
-  .hero{padding:13vh 6vw 8vh}
-  .hero h1{font-size:18vw}
-  section{padding:105px 6vw}
-  .duo-grid{grid-template-columns:1fr}
-  .duo-card{min-height:390px}
-  .timeline{grid-template-columns:70px 1fr;gap:20px}
-  .creation-box{padding:35px 25px}
-  .future-item{gap:20px}
-  .future-item span:last-child{display:none}
-  footer{padding:25px 6vw}
+.reveal.in{
+  opacity:1;
+  transform:none;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+  .links{
+    display:none;
+  }
+
+  .hero{
+    min-height:680px;
+    padding:0 6vw;
+  }
+
+  .hero-title{
+    font-size:18vw;
+  }
+
+  .hero-bottom{
+    display:block;
+  }
+
+  .hero-meta{
+    text-align:left;
+    margin-top:28px;
+  }
+
+  .story,
+  .chapter,
+  .build,
+  .lessons,
+  .future{
+    padding:110px 6vw;
+  }
+
+  .duo,
+  .creation{
+    padding:100px 5vw;
+  }
+
+  .duo-grid,
+  .build-top{
+    grid-template-columns:1fr;
+  }
+
+  .duo-card{
+    height:500px;
+  }
+
+  .creation-frame{
+    padding:35px;
+    min-height:600px;
+  }
+
+  .lesson{
+    grid-template-columns:55px 1fr;
+  }
+
+  .system-row{
+    grid-template-columns:55px 1fr;
+  }
+
+  .system-row span{
+    display:none;
+  }
+
+  .cursor-dot,
+  .cursor-ring{
+    display:none;
+  }
+
+  footer{
+    flex-direction:column;
+    gap:12px;
+  }
 }
 
 @media(prefers-reduced-motion:reduce){
-  *,*:before,*:after{
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
-    scroll-behavior:auto!important;
+
+  html{
+    scroll-behavior:auto;
+  }
+
+  *,
+  *:before,
+  *:after{
+    animation:none!important;
+    transition:none!important;
   }
 }
 </style>
@@ -546,405 +1041,867 @@ footer{
 
 <body>
 
-<div class="cursor"></div>
+<!-- LOADER -->
 
-<nav>
-  <div class="logo">MAGNUS VERITY × BL4Z3</div>
-  <div class="navlinks">
-    <a href="#story">Story</a>
-    <a href="#duo">Duo</a>
-    <a href="#work">Work</a>
-    <a href="#future">Future</a>
+<div id="loader">
+  <div class="loader">
+    <h1><span>LIMITLESS</span></h1>
+    <p>MAGNUS VERITY × BL4Z3</p>
   </div>
+</div>
+
+<div id="progress"></div>
+
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+
+<!-- NAV -->
+
+<nav class="nav">
+
+  <a href="#" class="brand">
+    MAGNUS VERITY × BL4Z3
+  </a>
+
+  <div class="links">
+    <a href="#duo">DUO</a>
+    <a href="#work">WORK</a>
+    <a href="#future">FUTURE</a>
+  </div>
+
 </nav>
 
-<main>
+
+<!-- HERO -->
 
 <section class="hero">
+
   <div class="grid"></div>
+
   <div class="orbit"></div>
 
-  <div class="kicker">Two minds. One direction. No ceiling.</div>
+  <div class="hero-content">
 
-  <h1>
-    <span><span class="line">MAGNUS</span></span>
-    <span><span class="line delay">VERITY × BL4Z3</span></span>
-  </h1>
+    <div class="eyebrow">
+      THE OG DUO · BUILDING WITHOUT A CEILING
+    </div>
 
-  <p class="hero-sub">
-    We don't want to build what's already possible.
-    We want to find out what becomes possible when ambition,
-    technology and relentless execution move together.
+    <h1 class="hero-title">
+
+      <span class="clip">
+        <span class="word">MAGNUS</span>
+      </span>
+
+      <span class="clip">
+        <span class="word">VERITY × BL4Z3</span>
+      </span>
+
+    </h1>
+
+    <div class="hero-bottom">
+
+      <div>
+
+        <p class="hero-copy">
+          Two minds. One direction. A ridiculous amount of ambition.
+          We build systems, products and ideas because the ceiling is
+          usually wherever someone decides to stop.
+        </p>
+
+        <a href="#story" class="cta">
+          ENTER THE STORY ↓
+        </a>
+
+      </div>
+
+      <div class="hero-meta">
+        ORIGINAL DUO<br>
+        INDEPENDENT BUILDERS<br>
+        STILL JUST GETTING STARTED
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="scroll">
+    <i></i>
+    SCROLL
+  </div>
+
+</section>
+
+
+<!-- STORY -->
+
+<section class="story" id="story">
+
+  <div class="kicker reveal">
+    01 — THE WHY
+  </div>
+
+  <h2 class="statement reveal">
+
+    We didn't start with<br>
+
+    <span class="dim">
+      a portfolio.
+    </span>
+
+    <br>
+
+    We started with<br>
+
+    a bigger question.
+
+  </h2>
+
+  <p class="story-note reveal">
+
+    What happens when curiosity turns into obsession,
+    obsession turns into building, and building becomes a habit?
+
+    That's the experiment.
+
   </p>
 
-  <div class="cta-row">
-    <a class="btn primary" href="https://aiworkforce.ai.studio" target="_blank">
-      Explore AI Workforce ↗
-    </a>
-    <a class="btn" href="#story">Enter the story ↓</a>
-  </div>
-
-  <div class="scroll">Scroll to explore</div>
 </section>
 
 
-<section class="ambition" id="story">
-  <div>
-    <div class="section-label reveal">01 — The Ambition</div>
+<!-- MINDSET -->
 
-    <h2 class="big reveal">
-      We aren't here to build
-      <span class="muted">ordinary things.</span>
+<section class="chapter">
+
+  <div class="chapter-inner">
+
+    <div class="kicker reveal">
+      02 — THE MINDSET
+    </div>
+
+    <h2 class="chapter-title reveal">
+
+      THINK<br>
+      UNREASONABLY<br>
+      BIG.
+
     </h2>
 
-    <p class="statement reveal">
-      The goal was never simply to launch a product, collect users,
-      or follow whatever everyone else was building.
-      The ambition is bigger: create systems that give a small team
-      disproportionate power to create, solve and execute.
+    <p class="chapter-text reveal">
+
+      We don't need permission to explore ambitious ideas.
+      The point isn't to look established.
+
+      The point is to become capable enough to build
+      things that weren't there before.
+
     </p>
+
   </div>
+
 </section>
 
 
-<section class="duo" id="duo">
-  <div class="section-label reveal">02 — The Original Duo</div>
+<!-- DUO -->
 
-  <h2 class="big reveal">
-    One vision.<br>
-    One execution layer.
-  </h2>
+<section class="duo" id="duo">
+
+  <div class="duo-head reveal">
+
+    <h2>
+      THE<br>
+      OG DUO.
+    </h2>
+
+    <p>
+      DIFFERENT STRENGTHS.<br>
+      SAME OBSESSION.<br>
+      ONE DIRECTION.
+    </p>
+
+  </div>
+
 
   <div class="duo-grid">
 
-    <div class="duo-card reveal">
-      <div class="duo-name">Magnus<br>Verity</div>
-      <div class="duo-role">Vision · Strategy · Creation</div>
+    <article class="duo-card reveal">
 
-      <div class="duo-text">
-        The ambition, the direction and the refusal to think small.
-        Turning ideas into things that can actually exist.
+      <div class="card-num">
+        01 / VISION
       </div>
-    </div>
 
-    <div class="duo-card reveal">
-      <div class="duo-name">BL4Z3</div>
-      <div class="duo-role">Systems · Technology · Execution</div>
+      <div class="card-orbit"></div>
 
-      <div class="duo-text">
-        The technical counterpart. Architecture, problem solving,
-        iteration and turning impossible-looking problems into systems.
+      <div class="card-name">
+        MAGNUS<br>
+        VERITY
       </div>
-    </div>
+
+      <div class="card-role">
+        Vision · Strategy · Product · Ambition
+      </div>
+
+    </article>
+
+
+    <article class="duo-card reveal">
+
+      <div class="card-num">
+        02 / EXECUTION
+      </div>
+
+      <div class="card-orbit"></div>
+
+      <div class="card-name">
+        BL4Z3
+      </div>
+
+      <div class="card-role">
+        Technology · Systems · Engineering · Execution
+      </div>
+
+    </article>
 
   </div>
+
 </section>
 
 
-<section class="og">
-  <div class="section-label reveal">03 — The Beginning</div>
+<!-- CINEMATIC MOMENT -->
 
-  <div class="og-word reveal">OG DUO</div>
+<section class="moment" data-moment>
 
-  <p class="reveal">
-    Before the polished products, there was simply an idea,
-    a builder and a technical mind willing to keep pushing.
-    That's the part worth remembering.
-  </p>
-</section>
+  <div>
 
-
-<section>
-  <div class="section-label reveal">04 — The Journey</div>
-
-  <h2 class="big reveal">
-    Build.<br>
-    Break.<br>
-    Understand.<br>
-    Rebuild.
-  </h2>
-
-  <div class="timeline">
-
-    <div class="event-year reveal">01</div>
-    <div class="event reveal">
-      <h3>The idea</h3>
-      <p>
-        A simple question: what if businesses could hire intelligent
-        digital employees instead of just using another piece of software?
-      </p>
+    <div class="moment-word">
+      BUILD.
     </div>
-
-    <div class="event-year reveal">02</div>
-    <div class="event reveal">
-      <h3>The first system</h3>
-      <p>
-        AI Workforce began taking shape around autonomous AI employees,
-        starting with the AI Sales Manager.
-      </p>
-    </div>
-
-    <div class="event-year reveal">03</div>
-    <div class="event reveal">
-      <h3>The hard part</h3>
-      <p>
-        Bugs exposed everything that mattered: reliability, security,
-        tenant isolation, production consistency and real-world behavior.
-      </p>
-    </div>
-
-    <div class="event-year reveal">04</div>
-    <div class="event reveal">
-      <h3>The rebuild</h3>
-      <p>
-        Instead of hiding the failures, we used them to make the architecture
-        stronger and the product more serious.
-      </p>
-    </div>
-
-    <div class="event-year reveal">05</div>
-    <div class="event reveal">
-      <h3>V2</h3>
-      <p>
-        The product moved from an experiment toward a real platform —
-        production infrastructure, customer isolation, live widgets and
-        a growing AI employee system.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-
-<section class="creation" id="work">
-  <div class="section-label reveal">05 — What We Built</div>
-
-  <h2 class="big reveal">
-    Meet the first<br>
-    <span class="muted">major creation.</span>
-  </h2>
-
-  <div class="creation-box reveal">
-
-    <div class="section-label">AI Workforce</div>
-
-    <h3>
-      AI employees.<br>
-      Built to work.
-    </h3>
 
     <p>
-      AI Workforce is a global platform built around a simple idea:
-      businesses shouldn't have to choose between expensive human capacity
-      and limited software. Intelligent AI employees can handle real work,
-      conversations and workflows around the clock.
+      The idea only becomes real when somebody decides to ship it.
     </p>
 
-    <a
-      class="enter"
-      href="https://aiworkforce.ai.studio"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      ENTER AI WORKFORCE
-      <span class="arrow">↗</span>
-    </a>
-
   </div>
+
 </section>
 
 
-<section class="future" id="future">
-  <div class="section-label reveal">06 — The Future</div>
+<!-- BREAK -->
 
-  <h2 class="big reveal">
-    This is not<br>
-    the destination.
-  </h2>
+<section class="chapter">
 
-  <div class="future-list">
+  <div class="chapter-inner">
 
-    <div class="future-item reveal">
-      <span>More AI Employees</span>
-      <span>Expansion</span>
+    <div class="kicker reveal">
+      03 — THE PROCESS
     </div>
 
-    <div class="future-item reveal">
-      <span>More Autonomous Systems</span>
-      <span>Systems</span>
-    </div>
+    <h2 class="chapter-title reveal">
 
-    <div class="future-item reveal">
-      <span>More Things Built From Zero</span>
+      BREAK<br>
+      EVERYTHING<br>
+      THAT NEEDS FIXING.
+
+    </h2>
+
+    <p class="chapter-text reveal">
+
+      Bugs weren't the end of the story.
+      They became feedback.
+
+      Reliability, security, isolation, performance
+      and real-world behavior became part of the craft.
+
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- SYSTEM -->
+
+<section class="build">
+
+  <div class="build-top">
+
+    <h2 class="build-title reveal">
+      FROM<br>
+      CHAOS<br>
+      TO SYSTEM.
+    </h2>
+
+    <p class="build-copy reveal">
+
+      Building teaches differently than planning.
+      Every failure exposes a layer.
+
+      Every layer becomes a system.
+      And every system creates room for the next idea.
+
+    </p>
+
+  </div>
+
+
+  <div class="system">
+
+    <div class="system-row reveal">
+      <div class="num">01</div>
+      <h3>Idea → Product</h3>
       <span>Creation</span>
     </div>
 
-    <div class="future-item reveal">
-      <span>A Much Bigger Playground</span>
-      <span>Limitless</span>
+    <div class="system-row reveal">
+      <div class="num">02</div>
+      <h3>Failure → Learning</h3>
+      <span>Iteration</span>
+    </div>
+
+    <div class="system-row reveal">
+      <div class="num">03</div>
+      <h3>Learning → Architecture</h3>
+      <span>Systems</span>
+    </div>
+
+    <div class="system-row reveal">
+      <div class="num">04</div>
+      <h3>Architecture → Scale</h3>
+      <span>Next</span>
     </div>
 
   </div>
+
 </section>
 
 
-<section class="og">
-  <div class="section-label reveal">07 — The Philosophy</div>
+<!-- SHIP -->
 
-  <h2 class="big reveal" style="margin:auto;">
-    Think bigger.<br>
-    Build relentlessly.<br>
-    Stay <span class="muted">limitless.</span>
-  </h2>
+<section class="moment" data-moment>
 
-  <p class="reveal">
-    No artificial ceiling. No obsession with looking impressive.
-    Just ambitious ideas, real systems and the willingness to keep building.
-  </p>
+  <div>
+
+    <div class="moment-word">
+      SHIP.
+    </div>
+
+    <p>
+      Perfection is useful as a direction.
+      Shipping is useful as proof.
+    </p>
+
+  </div>
+
 </section>
 
 
-<section class="final">
+<!-- AI WORKFORCE -->
 
-  <div class="section-label reveal">Magnus Verity × BL4Z3</div>
+<section class="creation" id="work">
 
-  <h2 class="reveal">
-    ONLY<br>
-    THE<br>
-    BEGINNING.
-  </h2>
+  <div class="creation-frame reveal">
 
-  <p class="reveal">
-    The competition isn't dead.<br>
-    We're just not done building yet.
-  </p>
+    <div class="creation-label">
+      04 — FIRST MAJOR CREATION
+    </div>
 
-  <div class="cta-row reveal">
+    <h2 class="creation-title">
+
+      AI<br>
+      WORKFORCE.
+
+    </h2>
+
+    <p class="creation-copy">
+
+      A global platform built around AI employees
+      that can handle real business work around the clock.
+
+      The first major system from the duo —
+      and nowhere near the final one.
+
+    </p>
+
     <a
-      class="btn primary"
+      class="creation-btn"
       href="https://aiworkforce.ai.studio"
       target="_blank"
       rel="noopener noreferrer"
     >
-      Visit AI Workforce ↗
+      ENTER AI WORKFORCE ↗
     </a>
 
-    <a class="btn" href="#story">Restart the journey ↑</a>
   </div>
 
 </section>
 
-</main>
+
+<!-- LESSONS -->
+
+<section class="lessons">
+
+  <div class="kicker reveal">
+    05 — WHAT BUILDING TAUGHT US
+  </div>
+
+  <h2 class="statement reveal">
+
+    MAKE IT<br>
+
+    <span class="dim">
+      REAL.
+    </span>
+
+  </h2>
+
+
+  <div class="lesson-grid">
+
+    <div class="lesson reveal">
+
+      <div class="lesson-no">
+        01
+      </div>
+
+      <div>
+
+        <h3>
+          Reliability before hype.
+        </h3>
+
+        <p>
+          Cool ideas mean little if the system
+          doesn't work when someone actually needs it.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="lesson reveal">
+
+      <div class="lesson-no">
+        02
+      </div>
+
+      <div>
+
+        <h3>
+          Security isn't decoration.
+        </h3>
+
+        <p>
+          Trust has to exist underneath the interface,
+          not just inside the marketing.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="lesson reveal">
+
+      <div class="lesson-no">
+        03
+      </div>
+
+      <div>
+
+        <h3>
+          Build. Test. Break. Repeat.
+        </h3>
+
+        <p>
+          The fastest path forward isn't avoiding failure.
+          It's learning faster from it.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FUTURE -->
+
+<section class="future" id="future">
+
+  <div class="kicker reveal">
+    06 — WHAT'S NEXT
+  </div>
+
+  <h2 class="future-title reveal">
+
+    THERE IS<br>
+    NO <span>FINAL FORM.</span>
+
+  </h2>
+
+  <p class="future-copy reveal">
+
+    AI Workforce is one chapter.
+
+    More systems, more products,
+    more experiments and more ambitious ideas
+    are waiting behind it.
+
+    The direction matters more than the destination.
+
+  </p>
+
+
+  <div class="pills reveal">
+
+    <div class="pill">
+      AI EMPLOYEES
+    </div>
+
+    <div class="pill">
+      AUTONOMOUS SYSTEMS
+    </div>
+
+    <div class="pill">
+      NEW PRODUCTS
+    </div>
+
+    <div class="pill">
+      BIGGER IDEAS
+    </div>
+
+    <div class="pill">
+      NO CEILING
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- LIMITLESS -->
+
+<section class="moment" data-moment>
+
+  <div>
+
+    <div class="moment-word">
+      LIMITLESS.
+    </div>
+
+    <p>
+      Not because we know everything.<br>
+      Because we're willing to keep learning.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- FINAL -->
+
+<section class="final">
+
+  <div class="final-inner">
+
+    <div class="final-small">
+      MAGNUS VERITY × BL4Z3
+    </div>
+
+    <h2 class="final-title">
+
+      JUST<br>
+      GETTING<br>
+      STARTED.
+
+    </h2>
+
+    <p class="final-sub">
+
+      The OG duo.<br>
+      One direction. No artificial ceiling.
+
+    </p>
+
+    <a
+      class="final-btn"
+      href="https://aiworkforce.ai.studio"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      SEE WHAT WE'RE BUILDING ↗
+    </a>
+
+  </div>
+
+</section>
+
 
 <footer>
-  <span>MAGNUS VERITY × BL4Z3</span>
-  <span>BUILD WITHOUT A CEILING</span>
+
+  <span>
+    LIMITLESS / 2026
+  </span>
+
+  <span>
+    MAGNUS VERITY × BL4Z3
+  </span>
+
 </footer>
 
 
 <script>
-const cursor = document.querySelector('.cursor');
 
-window.addEventListener('mousemove', e => {
-  cursor.animate(
-    {
-      left: e.clientX + 'px',
-      top: e.clientY + 'px'
+/* BASIC HELPERS */
+
+const $ = selector =>
+  document.querySelector(selector);
+
+const $$ = selector =>
+  document.querySelectorAll(selector);
+
+
+/* LOADER */
+
+window.addEventListener("load", () => {
+
+  setTimeout(() => {
+
+    $("#loader").classList.add("hide");
+
+    $$(".word").forEach(word => {
+      word.classList.add("show");
+    });
+
+  },650);
+
+});
+
+
+/* SCROLL PROGRESS */
+
+window.addEventListener("scroll", () => {
+
+  const max =
+    document.documentElement.scrollHeight -
+    window.innerHeight;
+
+  const progress =
+    max > 0
+      ? (window.scrollY / max) * 100
+      : 0;
+
+  $("#progress").style.width =
+    progress + "%";
+
+},{passive:true});
+
+
+/* REVEAL OBSERVER */
+
+const observer =
+  new IntersectionObserver(
+    entries => {
+
+      entries.forEach(entry => {
+
+        if(entry.isIntersecting){
+
+          entry.target.classList.add("in");
+
+          if(
+            entry.target.hasAttribute(
+              "data-moment"
+            )
+          ){
+            entry.target.classList.add("active");
+          }
+
+        }
+
+      });
+
     },
     {
-      duration: 700,
-      fill: 'forwards'
+      threshold:.12
     }
   );
-});
 
 
-const observer = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('active');
-      }
-    });
-  },
-  {threshold:.12}
+$$(".reveal,[data-moment]")
+  .forEach(element =>
+    observer.observe(element)
+  );
+
+
+/* CUSTOM CURSOR */
+
+const dot =
+  $(".cursor-dot");
+
+const ring =
+  $(".cursor-ring");
+
+let mouseX =
+  window.innerWidth / 2;
+
+let mouseY =
+  window.innerHeight / 2;
+
+let ringX = mouseX;
+let ringY = mouseY;
+
+
+window.addEventListener(
+  "mousemove",
+  event => {
+
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+
+    dot.style.transform =
+      `translate(
+        ${mouseX - 3.5}px,
+        ${mouseY - 3.5}px
+      )`;
+
+  }
 );
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function cursorLoop(){
+
+  ringX +=
+    (mouseX - ringX) * .14;
+
+  ringY +=
+    (mouseY - ringY) * .14;
+
+  ring.style.transform =
+    `translate(
+      ${ringX - 20}px,
+      ${ringY - 20}px
+    )`;
+
+  requestAnimationFrame(cursorLoop);
+}
+
+cursorLoop();
 
 
-document.querySelectorAll('.duo-card').forEach(card => {
+/* CURSOR INTERACTION */
 
-  card.addEventListener('mousemove', e => {
+$$("a,.duo-card")
+.forEach(element => {
 
-    const rect = card.getBoundingClientRect();
-
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const rotateY = ((x / rect.width) - .5) * 8;
-    const rotateX = ((y / rect.height) - .5) * -8;
-
-    card.style.transform =
-      `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
-  });
-
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
-
-});
-
-
-document.querySelectorAll('.btn,.enter').forEach(button => {
-
-  button.addEventListener('mousemove', e => {
-
-    const rect = button.getBoundingClientRect();
-
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-
-    button.style.transform =
-      `translate(${x * .08}px,${y * .08}px)`;
-  });
-
-  button.addEventListener('mouseleave', () => {
-    button.style.transform = '';
-  });
-
-});
-
-
-window.addEventListener('scroll', () => {
-
-  const scrolled = window.scrollY;
-
-  document.querySelector('.orbit').style.transform =
-    `rotate(${scrolled * .04}deg)`;
-
-});
-
-
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-
-  link.addEventListener('click', e => {
-
-    const target = document.querySelector(link.getAttribute('href'));
-
-    if(target){
-      e.preventDefault();
-
-      target.scrollIntoView({
-        behavior:'smooth',
-        block:'start'
-      });
+  element.addEventListener(
+    "mouseenter",
+    () => {
+      ring.classList.add("big");
     }
+  );
 
-  });
+  element.addEventListener(
+    "mouseleave",
+    () => {
+      ring.classList.remove("big");
+    }
+  );
 
 });
+
+
+/* 3D DUO CARDS */
+
+$$(".duo-card")
+.forEach(card => {
+
+  card.addEventListener(
+    "mousemove",
+    event => {
+
+      const rect =
+        card.getBoundingClientRect();
+
+      const x =
+        (event.clientX - rect.left) /
+        rect.width - .5;
+
+      const y =
+        (event.clientY - rect.top) /
+        rect.height - .5;
+
+      card.style.transform =
+        `perspective(1100px)
+         rotateX(${y * -6}deg)
+         rotateY(${x * 6}deg)`;
+
+    }
+  );
+
+
+  card.addEventListener(
+    "mouseleave",
+    () => {
+
+      card.style.transform =
+        "";
+
+    }
+  );
+
+});
+
+
+/* HERO PARALLAX */
+
+const orbit =
+  $(".orbit");
+
+window.addEventListener(
+  "scroll",
+  () => {
+
+    orbit.style.marginTop =
+      (window.scrollY * .11) + "px";
+
+  },
+  {passive:true}
+);
+
+
+/* SMOOTH ANCHOR SCROLL */
+
+$$('a[href^="#"]')
+.forEach(link => {
+
+  link.addEventListener(
+    "click",
+    event => {
+
+      const target =
+        $(link.getAttribute("href"));
+
+      if(target){
+
+        event.preventDefault();
+
+        target.scrollIntoView({
+          behavior:"smooth"
+        });
+
+      }
+
+    }
+  );
+
+});
+
 </script>
 
 </body>
-</html>
+  </html>
