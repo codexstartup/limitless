@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magnus Verity × BL4Z3 — Limitless</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:#050505;
+  color:#f5f5f5;
+  font-family:Inter,Arial,sans-serif;
+  overflow-x:hidden;
+  cursor:default;
+}
+a{text-decoration:none;color:inherit}
+
+::selection{background:#fff;color:#000}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:999;
+  opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+}
+
+.cursor{
+  position:fixed;
+  width:420px;
+  height:420px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(255,255,255,.075),transparent 65%);
+  transform:translate(-50%,-50%);
+  z-index:0;
+}
+
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:100;
+  padding:24px 5vw;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  mix-blend-mode:difference;
+}
+
+.logo{
+  font-weight:800;
+  letter-spacing:-.04em;
+  font-size:15px;
+}
+
+.navlinks{
+  display:flex;
+  gap:28px;
+  font-size:12px;
+  color:#bbb;
+}
+
+.navlinks a{transition:.3s}
+.navlinks a:hover{color:#fff}
+
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:12vh 7vw 8vh;
+  position:relative;
+  overflow:hidden;
+}
+
+.grid{
+  position:absolute;
+  inset:-20%;
+  opacity:.18;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:80px 80px;
+  transform:perspective(700px) rotateX(62deg) translateY(20%);
+  animation:gridMove 18s linear infinite;
+  mask-image:linear-gradient(to bottom,transparent,#000 35%,#000 70%,transparent);
+}
+
+@keyframes gridMove{
+  to{transform:perspective(700px) rotateX(62deg) translateY(28%)}
+}
+
+.orbit{
+  position:absolute;
+  width:55vw;
+  height:55vw;
+  max-width:800px;
+  max-height:800px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:50%;
+  right:-15%;
+  top:12%;
+  animation:spin 25s linear infinite;
+}
+
+.orbit:after{
+  content:"";
+  position:absolute;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:#fff;
+  top:10%;
+  left:12%;
+  box-shadow:0 0 30px #fff;
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.kicker{
+  position:relative;
+  z-index:2;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.28em;
+  color:#777;
+  margin-bottom:25px;
+  animation:fadeUp 1s ease both;
+}
+
+.hero h1{
+  position:relative;
+  z-index:2;
+  font-size:clamp(64px,11vw,170px);
+  line-height:.83;
+  letter-spacing:-.085em;
+  font-weight:900;
+  max-width:1100px;
+}
+
+.hero h1 span{
+  display:block;
+  overflow:hidden;
+}
+
+.hero h1 .line{
+  display:block;
+  animation:heroReveal 1.1s cubic-bezier(.16,1,.3,1) both;
+}
+
+.hero h1 .delay{animation-delay:.14s}
+
+@keyframes heroReveal{
+  from{transform:translateY(110%);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+.hero-sub{
+  position:relative;
+  z-index:2;
+  margin-top:45px;
+  max-width:610px;
+  color:#999;
+  font-size:clamp(16px,2vw,21px);
+  line-height:1.6;
+  animation:fadeUp 1s .5s ease both;
+}
+
+.cta-row{
+  position:relative;
+  z-index:2;
+  display:flex;
+  gap:14px;
+  margin-top:38px;
+  animation:fadeUp 1s .7s ease both;
+}
+
+.btn{
+  padding:16px 22px;
+  border:1px solid #333;
+  border-radius:100px;
+  font-size:13px;
+  font-weight:600;
+  transition:.35s cubic-bezier(.16,1,.3,1);
+}
+
+.btn.primary{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
+}
+
+.btn:hover{
+  transform:translateY(-4px);
+  border-color:#fff;
+}
+
+.btn.primary:hover{
+  box-shadow:0 15px 50px rgba(255,255,255,.13);
+}
+
+.scroll{
+  position:absolute;
+  bottom:35px;
+  left:7vw;
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:#555;
+}
+
+section{
+  position:relative;
+  padding:150px 7vw;
+  border-top:1px solid #151515;
+  overflow:hidden;
+}
+
+.section-label{
+  font-size:10px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  color:#555;
+  margin-bottom:35px;
+}
+
+.big{
+  font-size:clamp(42px,7vw,105px);
+  letter-spacing:-.075em;
+  line-height:.92;
+  max-width:1100px;
+  font-weight:800;
+}
+
+.muted{color:#666}
+
+.reveal{
+  opacity:0;
+  transform:translateY(70px);
+  transition:1s cubic-bezier(.16,1,.3,1);
+}
+
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.ambition{
+  min-height:90vh;
+  display:flex;
+  align-items:center;
+}
+
+.ambition .big{
+  max-width:1050px;
+}
+
+.statement{
+  margin-top:55px;
+  max-width:620px;
+  color:#888;
+  line-height:1.8;
+  font-size:16px;
+}
+
+.duo{
+  min-height:100vh;
+}
+
+.duo-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-top:80px;
+}
+
+.duo-card{
+  min-height:430px;
+  border:1px solid #202020;
+  border-radius:28px;
+  padding:42px;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(145deg,#0c0c0c,#070707);
+  transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .5s;
+}
+
+.duo-card:hover{
+  transform:translateY(-10px) rotateX(2deg);
+  border-color:#444;
+}
+
+.duo-card:before{
+  content:"";
+  position:absolute;
+  width:280px;height:280px;
+  border-radius:50%;
+  right:-100px;top:-100px;
+  background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);
+}
+
+.duo-name{
+  font-size:clamp(34px,4vw,58px);
+  font-weight:800;
+  letter-spacing:-.06em;
+}
+
+.duo-role{
+  margin-top:12px;
+  color:#666;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+}
+
+.duo-text{
+  position:absolute;
+  bottom:42px;
+  left:42px;
+  right:42px;
+  color:#888;
+  line-height:1.7;
+  font-size:14px;
+}
+
+.og{
+  padding:120px 7vw;
+  text-align:center;
+}
+
+.og-word{
+  font-size:clamp(70px,16vw,230px);
+  font-weight:900;
+  letter-spacing:-.1em;
+  line-height:.75;
+  background:linear-gradient(180deg,#fff,#333);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.og p{
+  max-width:600px;
+  margin:55px auto 0;
+  color:#777;
+  line-height:1.8;
+}
+
+.timeline{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:40px;
+  max-width:1000px;
+  margin-top:80px;
+}
+
+.event{
+  padding:28px 0;
+  border-top:1px solid #222;
+}
+
+.event-year{
+  color:#555;
+  font-size:12px;
+  letter-spacing:.1em;
+}
+
+.event h3{
+  font-size:clamp(25px,3vw,42px);
+  letter-spacing:-.05em;
+  margin-bottom:12px;
+}
+
+.event p{
+  color:#777;
+  line-height:1.7;
+  max-width:650px;
+  font-size:14px;
+}
+
+.creation{
+  min-height:100vh;
+}
+
+.creation-box{
+  margin-top:70px;
+  border:1px solid #222;
+  border-radius:35px;
+  padding:65px;
+  background:
+    radial-gradient(circle at 80% 20%,rgba(255,255,255,.07),transparent 25%),
+    #080808;
+  position:relative;
+  overflow:hidden;
+}
+
+.creation-box h3{
+  font-size:clamp(45px,7vw,100px);
+  letter-spacing:-.08em;
+  line-height:.9;
+}
+
+.creation-box p{
+  color:#777;
+  max-width:560px;
+  line-height:1.8;
+  margin-top:35px;
+}
+
+.enter{
+  display:inline-flex;
+  align-items:center;
+  gap:15px;
+  margin-top:45px;
+  padding:19px 25px;
+  border-radius:100px;
+  background:#fff;
+  color:#000;
+  font-size:13px;
+  font-weight:700;
+  transition:.4s cubic-bezier(.16,1,.3,1);
+}
+
+.enter:hover{
+  transform:scale(1.05);
+  box-shadow:0 20px 70px rgba(255,255,255,.12);
+}
+
+.arrow{
+  transition:.3s;
+}
+.enter:hover .arrow{transform:translate(5px,-5px)}
+
+.future{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.future-list{
+  margin-top:75px;
+  border-top:1px solid #222;
+}
+
+.future-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:28px 0;
+  border-bottom:1px solid #222;
+  transition:.35s;
+}
+
+.future-item:hover{
+  padding-left:18px;
+  padding-right:18px;
+  background:#0b0b0b;
+}
+
+.future-item span:first-child{
+  font-size:clamp(25px,4vw,52px);
+  font-weight:700;
+  letter-spacing:-.06em;
+}
+
+.future-item span:last-child{
+  color:#555;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+}
+
+.final{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.final h2{
+  font-size:clamp(55px,11vw,150px);
+  line-height:.82;
+  letter-spacing:-.09em;
+  font-weight:900;
+}
+
+.final p{
+  color:#666;
+  margin-top:35px;
+  font-size:14px;
+}
+
+.final .cta-row{
+  justify-content:center;
+}
+
+footer{
+  padding:30px 7vw;
+  border-top:1px solid #151515;
+  display:flex;
+  justify-content:space-between;
+  color:#444;
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(25px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:700px){
+  nav{padding:20px 5vw}
+  .navlinks{display:none}
+  .hero{padding:13vh 6vw 8vh}
+  .hero h1{font-size:18vw}
+  section{padding:105px 6vw}
+  .duo-grid{grid-template-columns:1fr}
+  .duo-card{min-height:390px}
+  .timeline{grid-template-columns:70px 1fr;gap:20px}
+  .creation-box{padding:35px 25px}
+  .future-item{gap:20px}
+  .future-item span:last-child{display:none}
+  footer{padding:25px 6vw}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cursor"></div>
+
+<nav>
+  <div class="logo">MAGNUS VERITY × BL4Z3</div>
+  <div class="navlinks">
+    <a href="#story">Story</a>
+    <a href="#duo">Duo</a>
+    <a href="#work">Work</a>
+    <a href="#future">Future</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="hero">
+  <div class="grid"></div>
+  <div class="orbit"></div>
+
+  <div class="kicker">Two minds. One direction. No ceiling.</div>
+
+  <h1>
+    <span><span class="line">MAGNUS</span></span>
+    <span><span class="line delay">VERITY × BL4Z3</span></span>
+  </h1>
+
+  <p class="hero-sub">
+    We don't want to build what's already possible.
+    We want to find out what becomes possible when ambition,
+    technology and relentless execution move together.
+  </p>
+
+  <div class="cta-row">
+    <a class="btn primary" href="https://aiworkforce.ai.studio" target="_blank">
+      Explore AI Workforce ↗
+    </a>
+    <a class="btn" href="#story">Enter the story ↓</a>
+  </div>
+
+  <div class="scroll">Scroll to explore</div>
+</section>
+
+
+<section class="ambition" id="story">
+  <div>
+    <div class="section-label reveal">01 — The Ambition</div>
+
+    <h2 class="big reveal">
+      We aren't here to build
+      <span class="muted">ordinary things.</span>
+    </h2>
+
+    <p class="statement reveal">
+      The goal was never simply to launch a product, collect users,
+      or follow whatever everyone else was building.
+      The ambition is bigger: create systems that give a small team
+      disproportionate power to create, solve and execute.
+    </p>
+  </div>
+</section>
+
+
+<section class="duo" id="duo">
+  <div class="section-label reveal">02 — The Original Duo</div>
+
+  <h2 class="big reveal">
+    One vision.<br>
+    One execution layer.
+  </h2>
+
+  <div class="duo-grid">
+
+    <div class="duo-card reveal">
+      <div class="duo-name">Magnus<br>Verity</div>
+      <div class="duo-role">Vision · Strategy · Creation</div>
+
+      <div class="duo-text">
+        The ambition, the direction and the refusal to think small.
+        Turning ideas into things that can actually exist.
+      </div>
+    </div>
+
+    <div class="duo-card reveal">
+      <div class="duo-name">BL4Z3</div>
+      <div class="duo-role">Systems · Technology · Execution</div>
+
+      <div class="duo-text">
+        The technical counterpart. Architecture, problem solving,
+        iteration and turning impossible-looking problems into systems.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="og">
+  <div class="section-label reveal">03 — The Beginning</div>
+
+  <div class="og-word reveal">OG DUO</div>
+
+  <p class="reveal">
+    Before the polished products, there was simply an idea,
+    a builder and a technical mind willing to keep pushing.
+    That's the part worth remembering.
+  </p>
+</section>
+
+
+<section>
+  <div class="section-label reveal">04 — The Journey</div>
+
+  <h2 class="big reveal">
+    Build.<br>
+    Break.<br>
+    Understand.<br>
+    Rebuild.
+  </h2>
+
+  <div class="timeline">
+
+    <div class="event-year reveal">01</div>
+    <div class="event reveal">
+      <h3>The idea</h3>
+      <p>
+        A simple question: what if businesses could hire intelligent
+        digital employees instead of just using another piece of software?
+      </p>
+    </div>
+
+    <div class="event-year reveal">02</div>
+    <div class="event reveal">
+      <h3>The first system</h3>
+      <p>
+        AI Workforce began taking shape around autonomous AI employees,
+        starting with the AI Sales Manager.
+      </p>
+    </div>
+
+    <div class="event-year reveal">03</div>
+    <div class="event reveal">
+      <h3>The hard part</h3>
+      <p>
+        Bugs exposed everything that mattered: reliability, security,
+        tenant isolation, production consistency and real-world behavior.
+      </p>
+    </div>
+
+    <div class="event-year reveal">04</div>
+    <div class="event reveal">
+      <h3>The rebuild</h3>
+      <p>
+        Instead of hiding the failures, we used them to make the architecture
+        stronger and the product more serious.
+      </p>
+    </div>
+
+    <div class="event-year reveal">05</div>
+    <div class="event reveal">
+      <h3>V2</h3>
+      <p>
+        The product moved from an experiment toward a real platform —
+        production infrastructure, customer isolation, live widgets and
+        a growing AI employee system.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="creation" id="work">
+  <div class="section-label reveal">05 — What We Built</div>
+
+  <h2 class="big reveal">
+    Meet the first<br>
+    <span class="muted">major creation.</span>
+  </h2>
+
+  <div class="creation-box reveal">
+
+    <div class="section-label">AI Workforce</div>
+
+    <h3>
+      AI employees.<br>
+      Built to work.
+    </h3>
+
+    <p>
+      AI Workforce is a global platform built around a simple idea:
+      businesses shouldn't have to choose between expensive human capacity
+      and limited software. Intelligent AI employees can handle real work,
+      conversations and workflows around the clock.
+    </p>
+
+    <a
+      class="enter"
+      href="https://aiworkforce.ai.studio"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      ENTER AI WORKFORCE
+      <span class="arrow">↗</span>
+    </a>
+
+  </div>
+</section>
+
+
+<section class="future" id="future">
+  <div class="section-label reveal">06 — The Future</div>
+
+  <h2 class="big reveal">
+    This is not<br>
+    the destination.
+  </h2>
+
+  <div class="future-list">
+
+    <div class="future-item reveal">
+      <span>More AI Employees</span>
+      <span>Expansion</span>
+    </div>
+
+    <div class="future-item reveal">
+      <span>More Autonomous Systems</span>
+      <span>Systems</span>
+    </div>
+
+    <div class="future-item reveal">
+      <span>More Things Built From Zero</span>
+      <span>Creation</span>
+    </div>
+
+    <div class="future-item reveal">
+      <span>A Much Bigger Playground</span>
+      <span>Limitless</span>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="og">
+  <div class="section-label reveal">07 — The Philosophy</div>
+
+  <h2 class="big reveal" style="margin:auto;">
+    Think bigger.<br>
+    Build relentlessly.<br>
+    Stay <span class="muted">limitless.</span>
+  </h2>
+
+  <p class="reveal">
+    No artificial ceiling. No obsession with looking impressive.
+    Just ambitious ideas, real systems and the willingness to keep building.
+  </p>
+</section>
+
+
+<section class="final">
+
+  <div class="section-label reveal">Magnus Verity × BL4Z3</div>
+
+  <h2 class="reveal">
+    ONLY<br>
+    THE<br>
+    BEGINNING.
+  </h2>
+
+  <p class="reveal">
+    The competition isn't dead.<br>
+    We're just not done building yet.
+  </p>
+
+  <div class="cta-row reveal">
+    <a
+      class="btn primary"
+      href="https://aiworkforce.ai.studio"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Visit AI Workforce ↗
+    </a>
+
+    <a class="btn" href="#story">Restart the journey ↑</a>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <span>MAGNUS VERITY × BL4Z3</span>
+  <span>BUILD WITHOUT A CEILING</span>
+</footer>
+
+
+<script>
+const cursor = document.querySelector('.cursor');
+
+window.addEventListener('mousemove', e => {
+  cursor.animate(
+    {
+      left: e.clientX + 'px',
+      top: e.clientY + 'px'
+    },
+    {
+      duration: 700,
+      fill: 'forwards'
+    }
+  );
+});
+
+
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('active');
+      }
+    });
+  },
+  {threshold:.12}
+);
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+document.querySelectorAll('.duo-card').forEach(card => {
+
+  card.addEventListener('mousemove', e => {
+
+    const rect = card.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const rotateY = ((x / rect.width) - .5) * 8;
+    const rotateX = ((y / rect.height) - .5) * -8;
+
+    card.style.transform =
+      `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+
+});
+
+
+document.querySelectorAll('.btn,.enter').forEach(button => {
+
+  button.addEventListener('mousemove', e => {
+
+    const rect = button.getBoundingClientRect();
+
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    button.style.transform =
+      `translate(${x * .08}px,${y * .08}px)`;
+  });
+
+  button.addEventListener('mouseleave', () => {
+    button.style.transform = '';
+  });
+
+});
+
+
+window.addEventListener('scroll', () => {
+
+  const scrolled = window.scrollY;
+
+  document.querySelector('.orbit').style.transform =
+    `rotate(${scrolled * .04}deg)`;
+
+});
+
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+
+  link.addEventListener('click', e => {
+
+    const target = document.querySelector(link.getAttribute('href'));
+
+    if(target){
+      e.preventDefault();
+
+      target.scrollIntoView({
+        behavior:'smooth',
+        block:'start'
+      });
+    }
+
+  });
+
+});
+</script>
+
+</body>
+</html>
